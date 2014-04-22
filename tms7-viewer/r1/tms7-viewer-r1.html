@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang=en >
+<head>
+<title>TMS7 Viewer R1</title>
+<meta charset=utf-8 >
+<meta name=author content='Theo Armour'>
+</head>
+<body>
+<script>
+
+	init();
+
+	function init() {
+
+		document.body.style.cssText = ' font: normal 12pt monospace; right: 0;';
+
+		var info = document.body.appendChild( document.createElement( 'div' ) );
+		info.innerHTML = '<h1>' + document.title + '</h1>';
+
+		xStart = 71;
+		yStart = 48;
+		var width = Math.floor( 0.2 * 338);
+		var height = width;
+		var space = 3;
+		for ( var i = 0; i < 15; i++ ) {
+			for ( var j = 0; j < 20; j++ ) {
+				var map = document.body.appendChild( document.createElement( 'img' ) );
+				map.width = width;
+				map.height = height;
+				map.style.cssText = 'border: 1px solid black; position: absolute; ';
+				map.style.cssText += 'left: ' + ( ( width + space ) * i ) + 'px; top: ' + ( ( height + space ) * j ) + 'px;';
+				map.src = '../../tms7/' + ( xStart + i )  + '/' + ( yStart + j ) + '.png';
+			}
+		} 
+	}
+
+</script>
+</body>
+</html>

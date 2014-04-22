@@ -1,0 +1,63 @@
+REFERENCE for SRTM30 Plus V6.0 data files
+Becker, J. J., D. T. Sandwell, W. H. F. Smith, J. Braud, B. Binder, J. Depner, D. Fabre3, J. Factor, S. Ingalls, S-H. Kim, R. Ladner, K. Marks, S. Nelson, A. Pharaoh, G. Sharman, R. Trimmer, J. VonRosenburg, G. Wallace, P. Weatherall., Global Bathymetry and Elevation Data at 30 Arc Seconds Resolution: SRTM30_PLUS, Marine Geodesy, 32:4, 355-371, 2009.
+
+DATA SOURCES AND REFERENCES LISTED IN ORDER OF % CELLS FILLED
+
+1) SRTM Topography
+ftp://e0srp01u.ecs.nasa.gov
+Farr, T. G., P. A. Rosen, E. Caro, R. Crippen, R. Duren, S. Hensley, M. Kobrick, M. Paller, E. Rodrigues, L. Roth, D. Seal, S. Shaffer, J. Shimada, J. Umland, M. Werner, M. Oskin, D. Burbank, D. Alsdorf, P. A. R. Tom G. Farr, Edward Caro, Robert Crippen, Riley Duren, Scott Hensley, M. P. Michael Kobrick, Ernesto Rodriguez, Ladislav Roth, David Seal, J. S. Scott Shaffer, Jeffrey Umland, Marian Werner, Michael Oskin, and a. D. A. Douglas Burbank, The Shuttle radar topography mission, Reviews of Geophysics, 45(RG2004), 2007.
+
+2) NGDC GEODAS
+http://www.ngdc.noaa.gov/mgg/geodas/geodas.html
+NGDC's GEODAS Marine Trackline Geophysics database contains bathymetry, magnetics, gravity and seismic navigation data collected during marine cruises from 1953 to the present. Coverage is worldwide. Data sources include both US and foreign oceanographic institutions and government agencies.
+
+3) MGG Contributions and RIDGE Multibeam Synthesis
+http://ocean-ridge.ldeo.columbia.edu/general/html/home.html
+RidgeMBS provides access to shaded relief maps, bathymetry grids and multibeam bathymetry field data from the world's mid-ocean ridges. This effort was initiated in 1993 with the support of the National Science Foundation (NSF)-sponsored RIDGE and Ridge 2000 programs.
+
+4) SIO Multibeam
+http://nsdl.sdsc.edu/
+Data, documents and images from 822 expeditions by the Scripps Institution of Oceanography (SIO) since 1903 are becoming web-accessible under a usage policy through the new SIOExplorer project, and will become part of the overall NSF-funded National Science Digital Library (NSDL).  The effort is a collaboration among researchers at Scripps, computer scientists from the San Diego Supercomputer Center (SDSC), and archivists and librarians from the UCSD Library.
+
+5) NGA Digital Nautical Soundings
+Global soundings for depth < 300 m. Because of the proprietary nature of some of these soundings, their source and location has not been encoded in the source ID files (SID) but they have been used to construct the grids.
+
+6) JAMSTEC Multibeam - JAMSTEC Data Site for Research Cruises
+http://www.jamstec.go.jp/cruisedata/e/
+JAMSTEC operates research vessels and submersibles for various area and objectives. At this site JAMSTEC disseminates the data and samples that have been obtained via its research cruises. Cruises are arranged in vessels, years and cruise codes. Links to the page for each data and sample are posted on the related cruise page.  This site posts the data and samples from JAMSTEC fleets; Natsushima, Kaiyo, Yokosuka, Kairei and Mirai, and submersibles operated on these vessels. Data and samples from submersibles are found on the data page of the related vessel.
+
+6) IBCAO Grid (latitude > 80 deg)
+http://www.ibcao.org/
+Jakobsson, M., Macnab, R., Mayer, M., Anderson, R., Edwards, M., Hatzky, J., Schenke, H-W., and Johnson, P., 2008, An improved bathymetric portrayal of the Arctic Ocean: Implications for ocean modeling and geological, geophysical and oceanographic analyses, v. 35, L07602, Geophysical Research Letters, doi:10.1029/2008GL033520
+
+7) NOAA Coastal Grids
+http://www.ngdc.noaa.gov/mgg/fliers/04mgg01.html
+The National Geophysical Data Center is addressing the need for topographic-bathymetric relief models that integrate land and seafloor elevations by assembling a gridded database which merges the US Geological Survey 3-arc-second DEMs with a vast compilation of hydrographic soundings collected by the National Ocean Service and various academic institutions. Eight CD-ROMs are available covering the US East, Gulf, and West Coasts (see above). In addition to the US Geological Survey and National Ocean Service data, volumes 3 through 5 also include bathymetric contours from the International Bathymetric Chart of the Caribbean Sea and the Gulf of Mexico project. These eight volumes, plus volumes 9 and 10 (Puerto Rico and Hawaii) are also available on one DVD-ROM. All volumes are also available for free download.
+
+8) IFREMER
+http://www.ifremer.fr/anglais/program/progi.htm
+Centerbeam of IFREMER cruises.
+
+9) CCOM High resolution bathymetry of US outer continental Shelf
+http://ccom.unh.edu/index.php?p=50|55|63&page=unclos/data.php
+CCOM, 2008. Law of the Sea : Center for Coastal and Ocean Mapping/Joint Hydrographic Center - CCOM/JHC : Law of the Sea Data, UNCLOS, Article 76, extended continental shelf, foot of the slope, multibeam bathymetry, seafloor mapping, University of New Hampshire, UNH.
+
+10) ICESAT Antarctic Topography
+http://www.nsidc.org/data/docs/daac/nsidc0304_0305_glas_dems.gd.html
+DiMarzio, J.P. et al., 2007. GLAS/ICESat 500 m Laser Altimetry Digital Elevation Model of Antarctica. National Snow and Ice Data Center (NSIDC).
+
+11) NOAA Coral Reef Conservation Program
+http://www.pifsc.noaa.gov/cred/hmapping/
+n 2001 the Coral Reef Ecosystem Division (CRED) began a program to systematically map coral reefs of the U.S.-affiliated Pacific Islands that occur in depths of greater than 20 m. In these water depths satellite-based imagery cannot routinely be used for mapping, vessel-based acoustic systems must be employed instead. Acoustic mapping systems provide high resolution depth information, and the acoustic response can be analyzed to extract information about the seabed’s character, e.g. roughness or hardness.
+
+12) GLOBEC
+http://www.whoi.edu/science/PO/so_globec/SO_GLOBEC_bathy.html
+One objective of the SO GLOBEC program is to produce a better knowledge of the sea floor bathymetry in the program study area. Much of Marguerite Bay and the adjacent shelf was poorly charted when the program was started in 2000, so we first created a local area improved version (ETOPO8.2A) of the Sandwell and Smith ETOPO2 2-min digital gridded bathymetry for the SO GLOBEC study area. The first SO GLOBEC mooring cruise on the R/V Lawrence M. Gould in March 2001 quickly showed that the 2-min resolution of ETOPO8.2A does not resolve many of the canyons and abrupt changes in topography which characterize Marguerite Bay and the inner- to-mid shelf region, nor is it particularly accurate in even the more uniform terrain regions.
+
+13) GEBCO
+http://www.bodc.ac.uk/data/online_delivery/gebco/
+This grid uses ENC data around India as well as some GEBCO contours in the Weddell Sea.
+
+14) NAVOCEANO Soundings
+High resolution grids around Hawaii.
+
