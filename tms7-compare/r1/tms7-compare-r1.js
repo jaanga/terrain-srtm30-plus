@@ -1,7 +1,7 @@
 	var info;
 	var title = document.title;
 
-//	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020n40.Bathymetry.png';  // 0 Saudi Arabia $$$
+	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020n40.Bathymetry.png';  // 0 Saudi Arabia $$$
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020n90.Bathymetry.png';  // 1 Russia $$$
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020s10.Bathymetry.png';  // 2 east Africa $$$
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e060n40.Bathymetry.png';  // 3 India
@@ -11,7 +11,7 @@
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e100n40.Bathymetry.png';  // 7 China
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e100n90.Bathymetry.png';  // 8 Sibera / Japan $$$
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e100s10.Bathymetry.png';  // 9 Australia ***
-	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e120s60.Bathymetry.png';  // 10 Antarctic
+//	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e120s60.Bathymetry.png';  // 10 Antarctic
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e140n40.Bathymetry.png';  // 11 New Guinea Japan ***
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e140n90.Bathymetry.png';  // 12 Siberia $$$
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e140s10.Bathymetry.png';  // 13 New Zealand xxx

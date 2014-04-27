@@ -146,13 +146,15 @@ console.log( offsetY, 'tsl', tileStartLat, 'ls', latStart, 'lf', latFinish, 'tsy
 							}
 							tms.pack().pipe( fs.createWriteStream( __dirname + '/../../tms7/' + tileX + '/' + tileY + '.png' ) );
 							count++;
+
+//console.log( 'l', count, tileX,tileY,'xs/f',xStart,xFinish, 'ys/f',yStart, yFinish, 'xd', xDelta, 'yd', yDelta, 'pw', this.width, 'tm:', new Date() - startTimeApp );
 							yStart = yFinish;
-console.log( 'log', count, tileX, tileY, 'st', xStart, yStart, 'dlat', deltaLat.toFixed(3), xDelta, yDelta, 'file:', new Date() - startTimeFile, 'app:', new Date() - startTimeApp );
 						}
 						xStart = xFinish;
 						xFinish += xDelta;
 						xFinish = ( xFinish > this.width ) ? this.width : xFinish; 
 					} 
+console.log( this.data );
 				});
 		});
 	});

@@ -5,7 +5,7 @@
 	var folderNameOut = '../../png/';
 	var fileBlank = '../blank-4800x6000.png';
 	var fileAntarctic = '../blank-7200x3600.png';
-	var shortList = [ 7, 11, 14, 19, 26, 30, 37 ];
+//	var shortList = [ 7, 11, 14, 19, 26, 30, 37 ];
 
 	var fileNames;
 	var count;

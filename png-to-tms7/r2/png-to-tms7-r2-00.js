@@ -1,7 +1,9 @@
+
+
 // https://github.com/niegowski/node-pngjs
 // https://github.com/niegowski/node-pngjs/blob/master/examples/test/test.js
 
-	var fs = require('fs');
+	var fs = require( 'fs' );
 	var PNG = require('pngjs').PNG;
 
 	var startTimeApp = new Date();
@@ -11,19 +13,26 @@
 
 	var zoomLevel = 7;
 
-	fs.readdir(__dirname + '/../../png/', function( err, files ) {
-		if (err) throw err;
-		var count = 0;
+	var folderPNG = '/../../png/';
+	var folderTMS = '/../../tms7/';
+// 	var files1, files2;
+	var count = 0;
 
-console.log( 'start', files );
+	fs.readdir( __dirname + folderPNG, function( err, files) {
+		if ( err ) throw err;
+		var file;
+//		for ( var i = 0; i < files1.length; i++ ) {
+		for ( var i = 0; i < 1; i++ ) {
+			file = files[ i ];
+			if ( !file.match( /\.png$/i ) ) continue;
+console.log( 'png', i, file );
+			processFolderPNG( file );
+		}
+	});
 
-//		files.forEach( function( file ) {
-		for ( var i = 0, iLen = files.length; i < 1; i++ )  {
-			file = files[i];
-
-			if ( !file.match( /\.png$/i ) ) return;
-
-			var startTimeFile = new Date();
+	function processFolderPNG( file) {
+		var img = fs.readFile( __dirname + folderPNG + file, function( err, data ) {
+			if ( err ) throw err;
 
 			var signLon = ( file.substr( 0, 1 ) === 'w' ) ? -1 : 1;
 			var signLat = ( file.substr( 4, 1 ) === 's' ) ? -1 : 1;
@@ -106,100 +115,85 @@ console.log( 'start', files );
 
 // console.log( file, offsetY, 'tsl', tileStartLat, 'ls', latStart, 'lf', latFinish, 'tsy', tileStartY, 'tfy', tileFinishY );
 
-			fs.createReadStream( __dirname + '/../../png/' + file )
-				.pipe( new PNG( {
-					filterType: 4
-				} ) )
+			var imageData = data;
 
-				.on('parsed', function() {
-					var pngIdx, tmsIdx, tmsX, tmsY, offX, offY;
-					var currentLatTop, currentLatBottom, deltaLat;
-					var xStart, xDelta, xFinish;
-					var yStart, yDelta, yFinish;
+			var pngIdx, tmsIdx, tmsX, tmsY, offX, offY;
+			var currentLatTop, currentLatBottom, deltaLat;
+			var xStart, xDelta, xFinish;
+			var yStart, yDelta, yFinish;
 
-					xStart = offsetX;
-					xDelta = pixelsX;
-					xFinish = xDelta;
+			xStart = offsetX;
+			xDelta = pixelsX;
+			xFinish = xDelta;
+			var fileTMS7;
+			for ( var tileX = tileStartX; tileX < tileFinishX; tileX++ ) {
+				if ( latStartFile === 90 ) {
+					yStart = offsetY;
+				} else {
+					yStart = 0;
+				}
+				offX = ( tileX === tileStartX ) ? offsetX : 0;
 
-					for ( var tileX = tileStartX; tileX < tileFinishX; tileX++ ) {
-						if ( latStartFile === 90 ) {
-							yStart = offsetY;
-						} else {
-							yStart = 0;
-						}
-						offX = ( tileX === tileStartX ) ? offsetX : 0;
+				for ( var tileY = tileStartY; tileY < tileFinishY; tileY++ ) {
 
-						for ( var tileY = tileStartY; tileY < tileFinishY; tileY++ ) {
+					tmsY = ( tileY === tileStartY ) ? offsetY : 0;
 
-							tmsY = ( tileY === tileStartY ) ? offsetY : 0;
+					currentLatTop = tile2lat( tileY, zoomLevel );
+					currentLatBottom = tile2lat( tileY + 1, zoomLevel );
+					deltaLat = currentLatTop - currentLatBottom;
+					yDelta = Math.floor( 120 * deltaLat );
 
-							currentLatTop = tile2lat( tileY, zoomLevel );
-							currentLatBottom = tile2lat( tileY + 1, zoomLevel );
-							deltaLat = currentLatTop - currentLatBottom;
-							yDelta = Math.floor( 120 * deltaLat );
-
-							if ( tileY === tileStartY ) {
-								yFinish = Math.floor( yDelta - offsetY );
-									if ( latStartFile === 90 ) {
-										yFinish = Math.floor( offsetY );
-									}
-
-							} else {
-								yFinish += Math.floor( yDelta ) ;
+					if ( tileY === tileStartY ) {
+						yFinish = Math.floor( yDelta - offsetY );
+							if ( latStartFile === 90 ) {
+								yFinish = Math.floor( offsetY );
 							}
 
-							yFinish = ( yFinish > this.height ) ? this.height : yFinish; 
+					} else {
+						yFinish += Math.floor( yDelta ) ;
+					}
 
+					yFinish = ( yFinish > this.height ) ? this.height : yFinish; 
 
-							fs.readFile( __dirname + '/../../tms7/' + tileX + '/' + tileY + '.png', function ( err, data ) {
-								if ( err )  {
-									var tms = new PNG({
-										width: xDelta,
-										height: yDelta,
-										filterType: -1
-									});
-								}
+					fileTMS7 =  tileX + '/' + tileY + '.png';
+					processTMS( fileTMS7, imageData, lonDelta, offX, tmsY, xStart, xFinish, yStart, yFinish, tileX, tileY );
+					yStart = yFinish;
+				}
+				xStart = xFinish;
+				xFinish += xDelta;
+				xFinish = ( xFinish > this.width ) ? this.width : xFinish; 
+			} 
 
+		});
+console.log( 'processFolderPNG' , file );
+	}
 
-
-//							fs.createReadStream( __dirname + '/../../tms7/' + tileX + '/' + tileY + '.png')
-
-//								.on('parsed', function() {
-console.log( 'ggggg' );
-									for ( var y = yStart; y < yFinish; y++ ) {
-										tmsX = offX;
-										for ( var x = xStart; x < xFinish; x++ ) {
-												pngIdx = ( this.width * y + x ) * 4;
-												tmsIdx = ( tms.width * tmsY + tmsX++ ) * 4;
-												tms.data[ tmsIdx ] = this.data[ pngIdx ];
-												tms.data[ tmsIdx + 1 ] = this.data[ pngIdx + 1 ];
-												tms.data[ tmsIdx + 2 ] = this.data[ pngIdx + 2 ];
-												tms.data[ tmsIdx + 3 ] = 255;
-										}
-										tmsY++;
-									}
-
-									tms.pack().pipe( fs.createWriteStream( __dirname + '/../../tms7/' + tileX + '/' + tileY + '.png' )  );
-									count++;
-									yStart = yFinish;
-
-		console.log( 'log', count, tileX, tileY, 'st', xStart, yStart, 'dlat', deltaLat.toFixed(3), xDelta, yDelta, 'file:', new Date() - startTimeFile, 'app:', new Date() - startTimeApp );
-
-
-								});
-
-
-
-						}
-						xStart = xFinish;
-						xFinish += xDelta;
-						xFinish = ( xFinish > this.width ) ? this.width : xFinish; 
-					} 
-				});
-
-		}
-//		});
-	});
+	function processTMS( file, imageData, lonDelta, offX, tmsY, xStart, xFinish, yStart, yFinish, tileX, tileY ) {
+		var pngIdx, tmsIdx, tmsX;
+		var pngWidth = lonDelta * 120;
+		var tmsWidth = this.width;
+		fs.createReadStream( __dirname + folderTMS + file )
+			.pipe( new PNG() )
+			.on('parsed', function () {
+				for ( var y = yStart; y < yFinish; y++ ) {
+					tmsX = offX;
+					for ( var x = xStart; x < xFinish; x++ ) {
+						pngIdx = ( pngWidth * y + x ) * 4;
+						tmsIdx = ( tmsWidth * tmsY + tmsX++ ) * 4;
+						this.data[ tmsIdx ] = imageData[ pngIdx ];
+						this.data[ tmsIdx + 1 ] = imageData[ pngIdx + 1 ];
+						this.data[ tmsIdx + 2 ] = imageData[ pngIdx + 2 ];
+						this.data[ tmsIdx + 3 ] = 255;
+					}
+					tmsY++;
+				}
+//				this.pack().pipe( fs.createWriteStream( __dirname + '/../../tms7/' + tileX + '/' + tileY + '.png' )  );
+				this.pack().pipe( fs.createWriteStream( __dirname + '/test/test.png' )  );
+				count++;
+//				yStart = yFinish;
+console.log( 'tms', count, file, pngWidth, tmsWidth, 'ox', offX, 'ty', tmsY, 'xs', xStart, 'xf', xFinish, 'ys', yStart, yFinish, 't', new Date() - startTimeApp);
+			});
+	}
 
 // The math
 // http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Tile_servers

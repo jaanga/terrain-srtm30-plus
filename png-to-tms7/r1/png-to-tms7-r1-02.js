@@ -18,10 +18,10 @@
 console.log( 'start', files );
 
 //		files.forEach( function( file ) {
-		for ( var i = 0, iLen = files.length; i < 1; i++ )  {
+		for ( var i = 0, iLen = files.length; i < iLen; i++ )  {
 			file = files[i];
 
-			if ( !file.match( /\.png$/i ) ) return;
+			if (!file.match(/\.png$/i)) return;
 
 			var startTimeFile = new Date();
 
@@ -149,47 +149,46 @@ console.log( 'start', files );
 							}
 
 							yFinish = ( yFinish > this.height ) ? this.height : yFinish; 
+/*
+							fs.readFile( __dirname + '/test/test.png', function ( err, data ) {
+								if ( err )  { // throw err;
 
-
-							fs.readFile( __dirname + '/../../tms7/' + tileX + '/' + tileY + '.png', function ( err, data ) {
-								if ( err )  {
 									var tms = new PNG({
 										width: xDelta,
 										height: yDelta,
 										filterType: -1
 									});
+
+									png.pack().pipe( fs.createWriteStream( __dirname + '/test/test.png' ) );
 								}
+								console.log( data );
+							});
+*/
 
+							var tms = new PNG({
+								width: xDelta,
+								height: yDelta,
+								filterType: -1
+							});
 
+							for ( var y = yStart; y < yFinish; y++ ) {
+								tmsX = offX;
+								for ( var x = xStart; x < xFinish; x++ ) {
+										pngIdx = ( this.width * y + x ) * 4;
+										tmsIdx = ( tms.width * tmsY + tmsX++ ) * 4;
+										tms.data[ tmsIdx ] = this.data[ pngIdx ];
+										tms.data[ tmsIdx + 1 ] = this.data[ pngIdx + 1 ];
+										tms.data[ tmsIdx + 2 ] = this.data[ pngIdxc + 2 ];
+										tms.data[ tmsIdx + 3 ] = 255;
+								}
+								tmsY++;
+							}
+							var dst = fs.createWriteStream( __dirname + '/../../tms7/' + tileX + '/' + tileY + '.png' );
+							tms.pack().pipe( dst );
+							count++;
+							yStart = yFinish;
 
-//							fs.createReadStream( __dirname + '/../../tms7/' + tileX + '/' + tileY + '.png')
-
-//								.on('parsed', function() {
-console.log( 'ggggg' );
-									for ( var y = yStart; y < yFinish; y++ ) {
-										tmsX = offX;
-										for ( var x = xStart; x < xFinish; x++ ) {
-												pngIdx = ( this.width * y + x ) * 4;
-												tmsIdx = ( tms.width * tmsY + tmsX++ ) * 4;
-												tms.data[ tmsIdx ] = this.data[ pngIdx ];
-												tms.data[ tmsIdx + 1 ] = this.data[ pngIdx + 1 ];
-												tms.data[ tmsIdx + 2 ] = this.data[ pngIdx + 2 ];
-												tms.data[ tmsIdx + 3 ] = 255;
-										}
-										tmsY++;
-									}
-
-									tms.pack().pipe( fs.createWriteStream( __dirname + '/../../tms7/' + tileX + '/' + tileY + '.png' )  );
-									count++;
-									yStart = yFinish;
-
-		console.log( 'log', count, tileX, tileY, 'st', xStart, yStart, 'dlat', deltaLat.toFixed(3), xDelta, yDelta, 'file:', new Date() - startTimeFile, 'app:', new Date() - startTimeApp );
-
-
-								});
-
-
-
+console.log( 'log', count, tileX, tileY, 'st', xStart, yStart, 'dlat', deltaLat.toFixed(3), xDelta, yDelta, 'file:', new Date() - startTimeFile, 'app:', new Date() - startTimeApp );
 						}
 						xStart = xFinish;
 						xFinish += xDelta;
