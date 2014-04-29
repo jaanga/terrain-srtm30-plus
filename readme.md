@@ -26,6 +26,11 @@ The 33 SRTM files - unzipped
 
 ### SRTM Viewer
 
+Mission: Provide a web browser viewer for SRTM30 Plus files. Translate data on the fly and display it as an image in your browser
+Viewer: [SRTM30 Plus Viewer]( http://jaanga.github.io/terrain-srtm30-plus/srtm-viewer/latest/ )
+Read Me: [SRTM30 Plus Viewer Read Me]( http://jaanga.github.io/terrain-srtm30-plus/srtm-viewer/ )
+Source code on GitHub: <https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/srtm-viewer>
+
 ### SRTM to PNG
 
 ### PNG

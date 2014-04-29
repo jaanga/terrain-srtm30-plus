@@ -1,9 +1,9 @@
 SRTM30 Plus Viewer Read Me
 ===
 
-### Live Demo
+### Viewer
 
-[SRTM30 Plus Viewer  Viewer (latest)]( http://jaanga.github.io/terrain-srtm30-plus/srtm-viewer/latest/ )
+[SRTM30 Plus Viewer (latest)]( http://jaanga.github.io/terrain-srtm30-plus/srtm-viewer/latest/ )
 
 ## Concept
 
@@ -64,7 +64,7 @@ Background data on the HGT file format is available from:
 
 You have two ways of viewing the HGT Viewer files:
 
-* Web page hosted on GitHub: [jaanga.github.io]( http://jaanga.github.io/terrain-srtm30-plus/srtm-viewer/latest/ "view the files as apps." ) <input value="<< You are now probably here." size=28 style="font:bold 12pt monospace;border-width:0;" >  
+* Web page hosted on GitHub: [jaanga.github.io]( http://jaanga.github.io/terrain-srtm30-plus/srtm-viewer/ "view the files as apps." ) <input value="<< You are now probably here." size=28 style="font:bold 12pt monospace;border-width:0;" >  
 * Source code on GitHub: [github.com/jaanga]( https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/srtm-viewer/ "View the files as source code." ) <scan style=display:none ><< You are now probably here.</scan>
 
 This project is a continuation of [Read HGT Files]( http://jaanga.github.io/terrain-plus/cookbook/read-hgt-files/readme-reader.html )
