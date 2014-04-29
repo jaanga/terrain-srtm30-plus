@@ -1,8 +1,8 @@
 	var info;
 	var title = document.title;
 
-	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020n40.Bathymetry.png';  // 0 Saudi Arabia $$$
-//	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020n90.Bathymetry.png';  // 1 Russia $$$
+//	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020n40.Bathymetry.png';  // 0 Saudi Arabia $$$
+	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020n90.Bathymetry.png';  // 1 Russia $$$
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020s10.Bathymetry.png';  // 2 east Africa $$$
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e060n40.Bathymetry.png';  // 3 India
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e060n90.Bathymetry.png';  // 4 Siberia $$$

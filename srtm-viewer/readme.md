@@ -1,9 +1,9 @@
-HGT Viewer Read Me
+SRTM30 Plus Viewer Read Me
 ===
 
 ### Live Demo
 
-[HGT Viewer (latest)]( http://jaanga.github.io/terrain-plus/cookbook/hgt-viewer/latest/ )
+[SRTM30 Plus Viewer  Viewer (latest)]( http://jaanga.github.io/terrain-srtm30-plus/srtm-viewer/latest/ )
 
 ## Concept
 
@@ -18,7 +18,7 @@ Help make it easier and faster to visualize mashed-up elevation data from a vari
 ## Features
 * Reads the binary data in an HGT or SRTM file and displays it as a colored image
 * Converts 'big endian' data to 'little endian' data
-* Displays HGT files in ['Data-Samples folder']( https://github.com/jaanga/terrain-plus/tree/gh-pages/data-samples/ )
+* Displays SRTM files in ['Data-Samples folder']( https://github.com/jaanga/terrain-plus/tree/gh-pages/data-samples/ )
 	* Samples include 30 Second data from Scripps Institute/UCSD, 3 Second data from de Ferranti and 1 Second data from the USGS
 * Elevation, X & Y, RGB, minimum and maximum elevations and other data are displayed as you move your cursor over the image
 	* Verifies that data goes from file to image to data correctly
@@ -64,8 +64,8 @@ Background data on the HGT file format is available from:
 
 You have two ways of viewing the HGT Viewer files:
 
-* Web page hosted on GitHub: [jaanga.github.io]( http://jaanga.github.io/terrain-plus/cookbook/hgt-viewer/ "view the files as apps." ) <input value="<< You are now probably here." size=28 style="font:bold 12pt monospace;border-width:0;" >  
-* Source code on GitHub: [github.com/jaanga]( https://github.com/jaanga/terrain-plus/tree/gh-pages/cookbook/hgt-viewer/ "View the files as source code." ) <scan style=display:none ><< You are now probably here.</scan>
+* Web page hosted on GitHub: [jaanga.github.io]( http://jaanga.github.io/terrain-srtm30-plus/srtm-viewer/latest/ "view the files as apps." ) <input value="<< You are now probably here." size=28 style="font:bold 12pt monospace;border-width:0;" >  
+* Source code on GitHub: [github.com/jaanga]( https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/srtm-viewer/ "View the files as source code." ) <scan style=display:none ><< You are now probably here.</scan>
 
 This project is a continuation of [Read HGT Files]( http://jaanga.github.io/terrain-plus/cookbook/read-hgt-files/readme-reader.html )
 

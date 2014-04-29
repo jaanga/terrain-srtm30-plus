@@ -3,7 +3,7 @@ Terrain SRTM30 Plus read me
 
 This repository relates to the SRTM30 Plus data made available by:
 
-The Satellite Geodesy research group at Scripps Institution of Oceanography, University of California San Diego
+The Satellite Geodesy research group at [Scripps Institution of Oceanography]( https://scripps.ucsd.edu/ ), University of California San Diego
 
 <http://topex.ucsd.edu/WWW_html/srtm30_plus.html>  
 <ftp://topex.ucsd.edu/pub/srtm30_plus/srtm30/data/>  
@@ -16,15 +16,15 @@ For attributions, copyright and license see: [srtm-license-copyright]( ./srtm-li
 To make the SRTM30 Plus data freely available as heightmaps 
 
 ### Vision
-To use SRTM30 Plus data as the basis for global 3D elvation data
+To use SRTM30 Plus data as the basis for global 3D elevation data
 
 ## Contents
 
 ### SRTM
 
-The 33 SRTM files - unziiped
+The 33 SRTM files - unzipped
 
-### SRTM Viewet
+### SRTM Viewer
 
 ### SRTM to PNG
 
