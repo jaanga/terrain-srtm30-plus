@@ -1,14 +1,16 @@
-PNG to TMS7 Read Me
+TMS7 Viewer Read Me
 ===
 
-### Sample Files
+### Viewer
 
+Files copied, bur conversion not yet carried out.
 
+http://jaanga.github.io/terrain-srtm30-plus/tms7-viewer/ 
 
 ## Concept
 
 ### Mission
-Provide a fast, simple utility to creat TMS zoom level 7 tiles from Scripps Institution SRTM files translated to PNG heightmaps
+Provide a fast, simple utility to view TMS zoom level 7 tiles from Scripps Institution SRTM files translated to PNG heightmaps
 
 ### Vision
 
@@ -31,8 +33,8 @@ Source of original data:
 
 You have two ways of viewing the Jaanga files:
 
-* Web page hosted on GitHub: [jaanga.github.io]( http://jaanga.github.io/terrain-plus/cookbook/png-viewer-srtm/ "view the files as apps." ) <input value="<< You are now probably here." size=28 style="font:bold 12pt monospace;border-width:0;" >  
-* Source code on GitHub: [github.com/jaanga]( https://github.com/jaanga/terrain-plus/tree/gh-pages/cookbook/hgt-viewer-srtm/ "View the files as source code." ) <scan style=display:none ><< You are now probably here.</scan>
+* Web page hosted on GitHub: [jaanga.github.io]( http://jaanga.github.io/terrain-srtm30-plus/tms7-viewer/ "view the files as apps." ) <input value="<< You are now probably here." size=28 style="font:bold 12pt monospace;border-width:0;" >  
+* Source code on GitHub: [github.com/jaanga]( https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/tms7-viewer/ "View the files as source code." ) <scan style=display:none ><< You are now probably here.</scan>
 
 
 ### Copyright and License

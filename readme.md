@@ -42,7 +42,12 @@ Source code on GitHub: <https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pa
 
 ### SRTM to PNG
 
-### PNG
+Node.js utility to convert SRTM files to PNG files
+
+Read Me: [SRTM to PNG Read Me]( http://jaanga.github.io/terrain-srtm30-plus/srtm-to-png/ )  
+Source code on GitHub: <https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/srtm-to-png>  
+
+### PNG Files
 
 The 33 SRTM30 Plus files converted to PNG heightmaps available unzipped here: 
 
@@ -62,9 +67,37 @@ Source code on GitHub: <https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pa
 
 ### PNG to TMS7
 
-### TMS7
+Node.js utility to convert PNG files to Tile Map Service Zoom Level 7 files
+
+Read Me: [NG to TMS7 Read Me]( http://jaanga.github.io/terrain-srtm30-plus/png-to-tms7/ )  
+Source code on GitHub: <https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/png-to-tms7>  
+
+
+### TMS7 Files
+
+16,384 TMS Zoom Level 7 Files
+
+<http://caper.ws/terrain-srtm30-plus/tms7/>
+
+* Rather than clogging up GitHub, the sample files are on an external server
+* Extra benefit: the directory is CORS-enabled and therefore the files can be accessed by any script
+
+
+### SRTM PNG TMS7 Compare
+
+Provide a fast, simple utility to view SRTM / PNG / TMS 7 heightmaps
+
+Viewer: [TMS7 Compare]( http://jaanga.github.io/terrain-srtm30-plus/tms7-compare/latest/ )  
+Read Me: [TMS7 Compare Read Me]( http://jaanga.github.io/terrain-srtm30-plus/tms7-compare/ )  
+Source code on GitHub: <https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/tms7-compare>  
 
 ### TMS7 Viewer 
+
+Provide a fast, simple utility to view Scripps Institution SRTM files translated to PNG heightmaps
+
+Viewer: [TMS7 Viewer]( http://jaanga.github.io/terrain-srtm30-plus/tms7-viewer/latest/ )  
+Read Me: [TMS7 Viewer Read Me]( http://jaanga.github.io/terrain-srtm30-plus/tms7-viewer/ )  
+Source code on GitHub: <https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/tms7-viewer>  
 
 
 ### Utilities

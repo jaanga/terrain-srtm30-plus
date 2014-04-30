@@ -1,4 +1,4 @@
-PNG Viewer Read Me
+SRTM30 Plus PNG Viewer Read Me
 ===
 
 ### Sample Files

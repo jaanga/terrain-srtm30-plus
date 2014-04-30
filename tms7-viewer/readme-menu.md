@@ -1,4 +1,4 @@
-[Jaanga](../../index.html ) &raquo;<br>[Terrain<br>SRTM30 Plus]( ../index.html ) &raquo;<br>[PNG to TMS7]( ./index.html )
+[Jaanga](../../index.html ) &raquo;<br>[Terrain<br>SRTM30 Plus]( ../index.html ) &raquo;<br>[TMS7 Viewer]( ./index.html )
 ===
 
 <p id=rm >

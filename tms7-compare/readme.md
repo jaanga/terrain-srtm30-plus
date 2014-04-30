@@ -1,9 +1,13 @@
-PNG to Tiles Viewer Read Me
+TMS7 Compare Read Me
 ===
 
-### Sample Files
+### Demo
 
-[PNG to Tiles Viewer]( http://jaanga.github.io/terrain-plus/cookbook/png-to-tiles-viewer/latest/ )
+Provide a fast, simple utility to view SRTM / PNG / TMS 7 heightmaps
+
+Viewer: [TMS7 Compare]( http://jaanga.github.io/terrain-srtm30-plus/tms7-compare/latest/ )  
+Read Me: [TMS7 Compare Read Me]( http://jaanga.github.io/terrain-srtm30-plus/tms7-compare/ )  
+Source code on GitHub: <https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/tms7-compare>  
 
 ## Concept
 
@@ -29,10 +33,10 @@ Source of original data:
 ## Project Links
 
 
-You have two ways of viewing the Jaanga files:
+You have two ways of viewing the Jaanga TMS7 Compare files:
 
-* Web page hosted on GitHub: [jaanga.github.io]( http://jaanga.github.io/terrain-plus/cookbook/png-to-tiles-viewer/ "view the files as apps." ) <input value="<< You are now probably here." size=28 style="font:bold 12pt monospace;border-width:0;" >  
-* Source code on GitHub: [github.com/jaanga]( https://github.com/jaanga/terrain-plus/tree/gh-pages/cookbook/png-to-tiles-viewer/ "View the files as source code." ) <scan style=display:none ><< You are now probably here.</scan>
+* Web page hosted on GitHub: [jaanga.github.io]( http://jaanga.github.io/terrain-srtm30-plus/tms7-compare/ "view the files as apps." ) <input value="<< You are now probably here." size=28 style="font:bold 12pt monospace;border-width:0;" >  
+* Source code on GitHub: [github.com/jaanga]( https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/tms7-compare/ "View the files as source code." ) <scan style=display:none ><< You are now probably here.</scan>
 
 
 ### Copyright and License
