@@ -5,21 +5,28 @@ SRTM30 Plus Viewer Read Me
 
 [SRTM30 Plus Viewer (latest)]( http://jaanga.github.io/terrain-srtm30-plus/srtm-viewer/latest/ )
 
+The viewer reads SRTM30 Plus data made available by:
+
+The Satellite Geodesy research group at [Scripps Institution of Oceanography]( https://scripps.ucsd.edu/ ), University of California San Diego
+
 ## Concept
 
 ### Mission
-Provide a web browser viewer for HGT and SRTM files - binary data containers of elevation data. 
+
+Provide a web browser viewer SRTM30 Plus files - binary data containers of elevation data. 
 Translates data on the fly and displays in your browser
 
 ### Vision
+
 Help make it easier and faster to visualize mashed-up elevation data from a variety of sources
 
 
 ## Features
-* Reads the binary data in an HGT or SRTM file and displays it as a colored image
+
+* Reads the binary data from SRTM30 Plus files and displays it as a colored image
 * Converts 'big endian' data to 'little endian' data
-* Displays SRTM files in ['Data-Samples folder']( https://github.com/jaanga/terrain-plus/tree/gh-pages/data-samples/ )
-	* Samples include 30 Second data from Scripps Institute/UCSD, 3 Second data from de Ferranti and 1 Second data from the USGS
+* Displays SRTM files in <http://caper.ws/terrain-srtm30-plus/srtm/> - which is CORS-enabled
+	* 30 Second data from Scripps Institute/UCSD
 * Elevation, X & Y, RGB, minimum and maximum elevations and other data are displayed as you move your cursor over the image
 	* Verifies that data goes from file to image to data correctly
 * Select to view in 'raw' or 'pretty' or 'mistake' colors
@@ -31,20 +38,23 @@ Help make it easier and faster to visualize mashed-up elevation data from a vari
 
 
 ## Road Map
+
+* Change from txt list to CSF and add names of locations to each fole
+* Permalinks
 * Provide a color look up table until a nice color algorithm is worked out
 * Have all the features of [PNG Viewer]( http://jaanga.github.io/terrain-viewer/png-viewer/readme-reader.html )
-* Permalinks
 * Capability to differentiate distinctly color ranges above and below zero
 
 ## Issues /Bugs
-* Elevation colors in 'pretty' mode are not pretty enough 
 
+* Exceptions are not properly recorded
+* Elevation colors in 'pretty' mode are not pretty enough 
 
 ## Credits
 
-Jonathan de Ferranti's [Viewfinder Panoramas]( http://www.viewfinderpanoramas.org/dem3.html )    
 Scripps Institution of Oceanography, University of California San Diego, [Satellite Geodesy research group]( http://topex.ucsd.edu/WWW_html/mar_topo.html )  
 USGS's [SRTM Data]( http://dds.cr.usgs.gov/srtm/ )  
+Jonathan de Ferranti's [Viewfinder Panoramas]( http://www.viewfinderpanoramas.org/dem3.html )   
 
 Thanks for the color range ideas and algorithm from Jim Bumgardner at <http://krazydad.com/tutorials/makecolors.php>  
 Thanks to GeoffMc and BradHards for helping with the 'big endian' issue.   
@@ -74,10 +84,15 @@ This project is a continuation of [Read HGT Files]( http://jaanga.github.io/terr
 
 [Jaanga copyright notice and license]( https://github.com/jaanga/jaanga.github.io/blob/master/jaanga-copyright-and-mit-license.md )
 
-This repository contains files that are  at an early and volatile stage. Not all licensing requirements may have been fully met let alone identified. It is the intension of the authors to play fair and all such requirements will either be met or the feature in question will turned off.
+This repository contains files that are at an early and volatile stage. Not all licensing requirements may have been fully met let alone identified. It is the intension of the authors to play fair and all such requirements will either be met or the feature in question will turned off.
 
 
 ### Change Log
+
+2014-04-29 ~ Theo
+
+* Forked to Terrain SRTM30 Pluss
+* Reads CORS Data
 
 
 2014-04-03 ~ Theo

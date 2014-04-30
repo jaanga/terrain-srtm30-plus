@@ -3,11 +3,12 @@
 
 <p id=rm >
 	<a href=JavaScript:displayPage("#readme.md#rm"); >Read Me</a>
-
 </p>
 
+<i class="fa fa-external-link"></i> [Source Code on GitHub ]( https://github.com/jaanga/terrain-srtm30-plus/ )  
+<br>
+<br>
 
-****
 
-[Source Code on GitHub]( https://github.com/jaanga/ )  
+<i class="fa fa-external-link"></i> 
 [Copyright and License]( https://github.com/jaanga/jaanga.github.io/blob/master/jaanga-copyright-and-mit-license.md )

@@ -45,9 +45,11 @@
 		window.addEventListener('mouseup', mouseUp, false);
 
 		container = document.body.appendChild( document.createElement( 'div' ) );
+//		container.crossOrigin = 'anonymous';
 		container.style.cssText = 'border: 0px red solid; height: ' + ( window.innerHeight - 10 ) + 'px; overflow: auto; width: ' +
 			( window.innerWidth - 10 ) + 'px; ';
 		canvas = container.appendChild( document.createElement( 'canvas' ) );
+//		canvas.crossOrigin = 'anonymous';
 		canvas.onmousemove = onMMove;
 		context = canvas.getContext( '2d' );
 
@@ -57,6 +59,7 @@
 
 	function getImage() {
 		image.src = pngFolder + selPNG.value + '.Bathymetry.png';
+		image.crossOrigin = 'anonymous';
 		image.onload = drawImage;
 	}
 

@@ -1,9 +1,9 @@
-PNG Viewer SRTM Read Me
+PNG Viewer Read Me
 ===
 
 ### Sample Files
 
-[SRTM30 Plus PNG Viewer]( http://jaanga.github.io/terrain-plus/cookbook/png-viewer-srtm/latest/ )
+[SRTM30 Plus PNG Viewer]( http://jaanga.github.io/terrain-srtm30-plus/png-viewer/latest/ )
 
 ## Concept
 
