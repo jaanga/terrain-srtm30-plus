@@ -58,8 +58,9 @@
 	}
 
 	function getImage() {
-		image.src = pngFolder + selPNG.value + '.Bathymetry.png';
 		image.crossOrigin = 'anonymous';
+		image.src = pngFolder + selPNG.value + '.Bathymetry.png';
+
 		image.onload = drawImage;
 	}
 
