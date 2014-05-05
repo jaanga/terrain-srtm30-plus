@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang=en >
+<head>
+<title>unFlatLand R10</title>
+<meta charset=utf-8 >
+</head>
+<body>
+<script src = http://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src = http://mrdoob.github.io/three.js/examples/js/controls/TrackballControls.js ></script>
+<script src = http://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+<script src = un-flatland-r10.js ></script>
+<script src = un-flatland-r10-menu.js ></script>
+<script>
+
+	document.title = uf.title;
+	document.body.style.cssText = ' margin: 0; overflow: hidden; ';
+
+	uf.defaults.location = 'San Francisco CA';
+	uf.defaults.placards = 0;
+
+	uf.init();
+
+	addMenu(); // in un-flatland-rxx-menu.js
+ 	addHelp(); // ditto
+
+	animate(); // custom animate in un-flatland-rxx-menu.js
+
+</script>
+</body>
+</html>

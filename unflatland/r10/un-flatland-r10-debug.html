@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang=en >
+<head>
+<title>unFlatLand R10 Dev</title>
+<meta charset=utf-8 >
+</head>
+<body>
+<script src = http://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src = http://mrdoob.github.io/three.js/examples/js/controls/TrackballControls.js ></script>
+<script src = http://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+<script src = http://jaanga.github.io/terrain-viewer/un-flatland/r10/un-flatland-r10.js ></script>
+<script src = un-flatland-r10-menu.js ></script>
+<script>
+	var segments = 200;
+	var radius = 15;
+	var radiusSegments = 3;
+	var follow = false;
+
+	var aircraft, cameraBot, tube;
+	var camera, splineCamera, cameraHelper;
+	var clock = new THREE.Clock();
+	var delta = 0;
+	var t = 0;
+
+	var b = '<br>';
+	var pointStart;
+
+	document.body.style.cssText = ' background-color:#fff; font: bold 12pt monospace; margin: 0; overflow: hidden; ';
+
+	stats = new Stats();
+	stats.domElement.style.cssText = 'position: absolute; right: 0; top: 0; zIndex: 100; ';
+	document.body.appendChild( stats.domElement );
+
+	uf.clearColor = uf.defaults.clearColor = 0xffffff;
+	uf.tilesPerSide = uf.defaults.tiles = 8;
+
+	uf.init();
+
+	addMenu();  // un-flatland-r9-menu.js
+ 	addHelp(); 
+	addConsole();
+
+	animate();
+
+	function addConsole() {
+		cons = document.body.appendChild( document.createElement( 'div' ) );
+		cons.style.cssText = 'background-color: #ccc; opacity: 0.9; overflow: auto; padding: 10px; ' +
+			'height: 500px; position: absolute; right: 20px; top: 20px; width: 400px; ';
+		cons.innerHTML = 'console' +
+
+
+			'<p>' +
+				'<a href=JavaScript:insertValues(); >insertValues</a> ' +
+				'<a href=JavaScript:updateInputs(); >updateInputs</a> ' +
+				'<a href=JavaScript:moveCamera(); >moveCamera</a> ' +
+//				'<a href=JavaScript:updateCameraTarget(); >updateCameraTarget</a> ' +
+			b + b +
+				'<a href=JavaScript:fidiToAngelIsland(); >fidiToAngelIsland</a>' + b +
+				'<a href=JavaScript:benNevis(); >benNevis</a>' + b +
+				'<a href=JavaScript:iquique(); >iquique</a>' + b +
+				'<a href=JavaScript:ressons(); >ressons</a>' + b +
+				'<a href=JavaScript:sb(); >sb</a>' +
+			'</p>' +
+			'<p>' +
+				'<a href=JavaScript:clearObjects() >clearObjects</a>' +
+			b +
+				'<a href=JavaScript:addHomePlus() >addHomePlus</a> ' +
+				'<a href=JavaScript:showUlLrOrigin(); >showUlLrOrigin</a> ' +
+				'<a href=JavaScript:addFloater(); >add floater</a>' +
+			'</p>' +
+			'<p>' +
+				'<a href=JavaScript:addObject() >addObject</a> ' +
+				'<a href=JavaScript:addPath() >addPath</a> ' +
+				'<a href=JavaScript:toggleFollow()>toggleFollow</a>' +
+			'</p>' +
+			'<p>' +
+				'1-1<input type=text id=inp11 value=37.700 size=8 /> ' +
+				'2-1<input type=text id=inp21 value=-122.300 size=8 /> ' +
+				'3-1<input type=text id=inp31 value=140 size=8 /> ' +
+				b +
+				'1-2<input type=text id=inp12 value=00 size=8 /> ' +
+				'2-2<input type=text id=inp22 value=00 size=8 /> ' +
+				'3-2<input type=text id=inp32 value=00 size=8 /> ' +
+			'</p>' +
+
+			'<p id=msg></p>' +
+		'';
+
+		clearObjects();
+	}
+
+	function insertValues() {
+		inp11.value = 37.7;
+		inp21.value = -122.39;
+		inp31.value = 100;
+
+		inp12.value = 37.78805;
+		inp22.value = -122.34375;
+		inp32.value = 0;
+	}
+
+	function updateInputs() {
+		inpCamLat.value = inp11.value;
+		inpCamLon.value = inp21.value;
+		inpCamAlt.value = inp31.value;
+
+		inpTarLat.value = inp12.value;
+		inpTarLon.value = inp22.value;
+		inpTarAlt.value = inp32.value;
+	}
+
+	function moveCamera() {
+		uf.placards = new THREE.Object3D;
+
+		var off = uf.tilesPerSide % 2 > 0 ? -128 : -256;
+		var pointStart = uf.getPoint( uf.lat, uf.lon, uf.zoom );
+
+		uf.camLat = parseFloat( inpCamLat.value);
+		uf.camLon = parseFloat( inpCamLon.value );
+		uf.camAlt = parseFloat( inpCamAlt.value );
+
+		uf.tarLat = parseFloat( inpTarLat.value );
+		uf.tarLon = parseFloat( inpTarLon.value );
+		uf.tarAlt = parseFloat( inpTarAlt.value );
+
+		var point = uf.getPoint( uf.camLat, uf.camLon, uf.zoom );
+		point.ptX += off + uf.tileSize * ( point.tileX - pointStart.tileX );
+		point.ptY += off + uf.tileSize * ( point.tileY - pointStart.tileY );
+
+		mesh = drawObject( point.ptX, uf.camAlt, point.ptY);
+		mesh.scale.set( 5, 5, 5 );
+		uf.placards.add( mesh );
+
+		uf.camX = point.ptX;
+		uf.camY = uf.camAlt;
+		uf.camZ = point.ptY;
+
+		point = uf.getPoint( uf.tarLat, uf.tarLon, uf.zoom );
+		point.ptX += off + uf.tileSize * ( point.tileX - pointStart.tileX );
+		point.ptY += off + uf.tileSize * ( point.tileY - pointStart.tileY );
+
+		mesh = drawObject( point.ptX, uf.tarAlt, point.ptY);
+		mesh.scale.set( 5, 5, 5 );
+		uf.placards.add( mesh );
+
+		uf.tarX = point.ptX;
+		uf.tarY = uf.camAlt;
+		uf.tarZ = point.ptY;
+
+		uf.scene.add( uf.placards );
+
+		uf.setCamera();
+
+console.log( point, mesh );
+	}
+
+
+	function fidiToAngelIsland() {
+		inpCamLat.value = 37.796;
+		inpCamLon.value = -122.398;
+		inpCamAlt.value = 15;
+
+		inpTarLat.value = 37.86;
+		inpTarLon.value = -122.43;
+		inpTarAlt.value = 8;
+	}
+
+	function benNevis() {
+
+// #start=195#camalt=250#camlat=56.75#camlon=-5.0035#lat=56.7968#lon=-5.0035#tiles=8#verts=24#taralt=380#tarlat=6.7968#tarlon=-5.0035
+
+		setZoom.value = uf.zoom = 12;
+		setScale.value = uf.scaleVertical = 5;
+
+		setTiles.value = uf.tilesPerSide = 8;
+		setVerts.value = uf.vertsPerTile = 24;
+
+		inpLat.value = uf.lat = 56.7968;
+		inpLon.value = uf.lon = -5.0035;
+
+		selPlace.selectedIndex = uf.startPlace = 195;
+
+		inpCamLat.value = uf.camLat = 57.05;
+		inpCamLon.value = uf.camLon = -5.0035;
+		inpCamAlt.value = uf.camAlt = 200;
+
+		inpTarLat.value = uf.tarLat = 56.7968;
+		inpTarLon.value = uf.talLon = -5.0035;
+		inpTarAlt.value = uf.tarAlt = 380;
+
+
+		uf.drawTerrain();
+		uf.setCamera();
+	}
+
+	function iquique() {
+
+		setZoom.value = uf.zoom = 14;
+		setScale.value = uf.scaleVertical = 9;
+
+		setTiles.value = uf.tilesPerSide = 10;
+		setVerts.value = uf.vertsPerTile = 24;
+
+		inpLat.value = uf.lat = -20.2167;
+		inpLon.value = uf.lon = -70.15;
+
+		selPlace.selectedIndex = uf.startPlace = 876;
+
+		inpCamLat.value = uf.camLat = -20.2167;
+		inpCamLon.value = uf.camLon = -70.3;
+		inpCamAlt.value = uf.camAlt = 500;
+
+		inpTarLat.value = uf.tarLat = -20.2267;
+		inpTarLon.value = uf.talLon = -70.15;
+		inpTarAlt.value = uf.tarAlt = 2;
+
+		uf.drawTerrain();
+		uf.setCamera();
+	}
+
+	function ressons() {
+		setZoom.value = uf.zoom = 16;
+		setScale.value = uf.scaleVertical = 9;
+
+		setTiles.value = uf.tilesPerSide = 15;
+		setVerts.value = uf.vertsPerTile = 24;
+
+		inpLat.value = uf.lat = 49.3889;
+		inpLon.value = uf.lon = 3.1494;
+
+		selPlace.selectedIndex = uf.startPlace = 1547;
+
+		inpCamLat.value = uf.camLat = 49.391;
+		inpCamLon.value = uf.camLon = 3.1475830078125;
+		inpCamAlt.value = uf.camAlt = 100;
+
+		inpTarLat.value = uf.tarLat = 49.38952445158216;
+		inpTarLon.value = uf.talLon = 3.1475830078125;
+		inpTarAlt.value = uf.tarAlt = 20;
+
+		uf.setCamera();
+		uf.drawTerrain();
+	}
+
+	function sb() {
+// 34.456314,-119.686383 2224 Gibralter Road, Santa Barbara
+		setZoom.value = uf.zoom = 15;
+		setScale.value = uf.scaleVertical = 9;
+
+		setTiles.value = uf.tilesPerSide = 20;
+		setVerts.value = uf.vertsPerTile = 12;
+
+		inpLat.value = uf.lat = 34.456314;
+		inpLon.value = uf.lon = -119.686383;
+
+		selPlace.selectedIndex = uf.startPlace = 1641;
+
+		inpCamLat.value = uf.camLat = 34.45;
+		inpCamLon.value = uf.camLon = -119.8;
+		inpCamAlt.value = uf.camAlt = 800;
+
+		inpTarLat.value = uf.tarLat = 34.456314;
+		inpTarLon.value = uf.talLon = -119.686383;
+		inpTarAlt.value = uf.tarAlt = 300;
+
+		uf.setCamera();
+		uf.drawTerrain();
+	}
+
+	function addObject() {
+		var pointX = 111
+		var pointY = 322;
+		var geometry, material, mesh;
+
+		geometry = new THREE.CubeGeometry( 10, 20, 10 );
+		material = new THREE.MeshNormalMaterial();
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.position.set( pointX, 10, pointY );
+		uf.placards.add( mesh );
+		uf.scene.add( uf.placards );
+
+		var tileX = Math.floor( pointX / 256 );
+		var tileY = Math.floor( pointY / 256 );
+
+		var deltaX = pointX % 256 / 256 ;
+		var deltaY = pointY % 256 / 256;
+
+		msg.innerHTML = 'pointX:' + pointX + ' pointY:' + pointY + b +
+			'tileX:' + tileX + ' tileY:' + tileY + b +
+			'deltaX:' + deltaX + ' deltaY:' + deltaY + b +
+		'';
+	}
+/*
+
+UL Terrain: lat:38.06578 lon:-122.69531
+Tiles x:652 y:1578
+Tile ul lat:38.13456 lon:-122.69531
+Tile delta lat:0.06916 lon:0.08789
+Point x: 0.00000 y:254.54863
+Offset x:-1024 y:-1280
+
+LR Terrain: lat:37.50973 lon:-121.99219
+Tiles x:660 y:1586
+Tile ul lat:37.57941 lon:-121.99219
+Tile delta lat:0.06969 lon:0.08789
+Point x: 0.00000 y:256.00000
+Offset x:1024 y:768
+
+Origin lat:37.78776 lon:-122.34375
+Tiles x:656 y:1583
+Tile ul lat:37.78808 lon:-122.34375
+Tile delta lat:0.06949 lon:0.08789
+Point x: 0.00000 y:1.20179
+Offset x:0 y:0
+*/
+
+	function addPath() {
+		pointStart = uf.getPoint( uf.lat, uf.lon, uf.zoom );
+
+		var pointsArr = [
+			[ 38.1, 100, -122.7],
+			[ 37.9, 100, -122.7],
+			[ 37.9, 80, -122.3],
+			[ 37.55, 100, -122.1],
+			[ 37.6, 80, -122.5],
+			[ 37.7, 100, -122.5],
+			[ 37.8, 50, -122.5],
+			[ 37.85, 50, -122.3],
+			[ 37.94, 100, -122.4],
+			[ 38, 100, -122.4]
+		];
+		var pointsLL = [];
+		var pointsControl = [];
+		var off = uf.tilesPerSide % 2 > 0 ? -128 : -256;
+		var point
+		for (var i = 0, len = pointsArr.length; i < len; i++) {
+			point = uf.getPoint( pointsArr[i][0], pointsArr[i][2], uf.zoom )
+			point.offsetX = off + uf.tileSize * ( point.tileX - pointStart.tileX );
+			point.offsetY = off + uf.tileSize * ( point.tileY - pointStart.tileY );
+
+			mesh = drawObject( point.ptX + point.offsetX, 50, point.ptY + point.offsetY);
+			mesh.scale.set( 5, 650, 5 );
+			uf.placards.add( mesh );
+			pointsLL.push( point );
+
+			pointsControl.push( v( point.ptX + point.offsetX, pointsArr[i][1],  point.ptY + point.offsetY ) );
+		}
+//		console.log( pointsLL, pointsControl );
+
+		var sampleSpline = new THREE.ClosedSplineCurve3( pointsControl )
+
+		tube = new THREE.TubeGeometry( sampleSpline, segments, radius, radiusSegments );
+		material = new THREE.MeshNormalMaterial();
+		mesh = new THREE.Mesh( tube, material );
+		uf.placards.add( mesh );
+
+		cameraBot = new THREE.Object3D();
+		uf.placards.add( cameraBot );
+
+		splineCamera = new THREE.PerspectiveCamera( 84, window.innerWidth / window.innerHeight, 0.01, 5000 );
+		cameraBot.add( splineCamera );
+		cameraHelper = new THREE.CameraHelper( splineCamera );
+		cameraBot.add( cameraHelper );
+
+		aircraft = new THREE.Object3D();
+		uf.placards.add( aircraft );
+
+		var loader = new THREE.JSONLoader();
+		loader.load( 'WrightFlyer-pb-jw.js', function( geometry ) {
+			geometry.applyMatrix( new THREE.Matrix4().makeRotationY( -Math.PI / 2 ) );
+			geometry.applyMatrix( new THREE.Matrix4().makeTranslation( 0, 2, -10 ) );
+
+			material = new THREE.MeshNormalMaterial();
+			mesh = new THREE.Mesh( geometry, material );
+			mesh.scale.set( 20, 20, 20 );
+			aircraft.add( mesh );
+		} );
+
+
+		uf.scene.add( uf.placards );
+	}
+
+
+	function showUlLrOrigin() {
+		pointStart = uf.getPoint( uf.lat, uf.lon, uf.zoom );
+
+		var point = uf.getPoint( uf.ulLat, uf.ulLon, uf.zoom );
+		point.title = 'UL Terrain:';
+		msg.innerHTML +=  displayData( pointStart, point, uf.ulLat, uf.ulLon );
+
+		point = uf.getPoint( uf.lrLat, uf.lrLon, uf.zoom );
+		point.title = 'LR Terrain:';
+		msg.innerHTML +=  displayData( pointStart, point, uf.lrLat, uf.lrLon);
+
+		var lat = uf.ulLat - 0.5 * (uf.ulLat - uf.lrLat);
+		var lon = uf.ulLon - 0.5 * ( uf.ulLon - uf.lrLon)
+		point = uf.getPoint( lat, lon, uf.zoom );
+		point.title = 'Origin';
+		msg.innerHTML +=  displayData( pointStart, point, lat, lon );
+
+		uf.scene.add( uf.placards );
+	}
+
+	function addFloater() {
+		pointStart = uf.getPoint( uf.lat, uf.lon, uf.zoom );
+
+		var latF = parseFloat( inp11.value );
+		var lonF = parseFloat( inp21.value );
+		pointFloat = uf.getPoint( latF, lonF, uf.zoom );
+		pointFloat.title = 'Point float:';
+		msg.innerHTML += displayData( pointStart, pointFloat, latF, lonF );
+
+		uf.scene.add( uf.placards );
+	}
+
+	function addHomePlus() {
+		pointStart = uf.getPoint( uf.lat, uf.lon, uf.zoom );
+
+		var lat = 37.796;
+		var lon = -122.398;
+
+		pointStart.offsetX = -256; //-128; 
+		pointStart.offsetY = -256; // -128;
+		pointStart.title = 'Point Start';
+		msg.innerHTML = displayData( pointStart, pointStart, lat, lon );
+
+		var latKoak = 37.7283509633333;
+		var lonKoak = -122.215348049167;
+		pointKoak = uf.getPoint( latKoak, lonKoak, uf.zoom );
+		pointKoak.title = 'Point koak';
+		msg.innerHTML += displayData( pointStart, pointKoak, latKoak, lonKoak );
+
+		var lat2 = lat - pointStart.deltaLat;
+		var lon2 = lon + pointStart.deltaLon;
+		var point2 = uf.getPoint( lat2, lon2, uf.zoom ); 
+		point2.title = 'Point 2';
+		msg.innerHTML +=  displayData( pointStart, point2, lat2, lon2 );
+
+		var lat3 = lat2 - point2.deltaLat;
+		var lon3 = lon2 + point2.deltaLon;
+		var point3 = uf.getPoint( lat3, lon3, uf.zoom ); 
+		point3.title = 'Point 3';
+		msg.innerHTML += displayData( pointStart, point3, lat2, lon3 );
+
+		uf.scene.add( uf.placards );
+	}
+
+	function clearObjects() {
+		msg.innerHTML = '';
+		if ( uf.placards && uf.placards.children.length > 0) {
+			uf.scene.remove( uf.placards );
+			uf.placards.children.length = 0;
+		}
+		uf.placards = new THREE.Object3D;
+		uf.scene.add( uf.placards );
+	}
+
+	function displayData( pointStart, point, lat, lon ) {
+		point.lat = lat;
+		point.lon = lon;
+
+		var off = uf.tilesPerSide % 2 > 0 ? -128 : -256;
+		point.offsetX = off + uf.tileSize * ( point.tileX - pointStart.tileX );
+		point.offsetY = off + uf.tileSize * ( point.tileY - pointStart.tileY );
+
+		mesh = drawObject( point.ptX + point.offsetX, 50, point.ptY + point.offsetY);
+		mesh.scale.set( 5, 150, 5 );
+		uf.placards.add( mesh );
+
+		return point.title + ' lat:' + point.lat.toFixed(5) + ' lon:' + point.lon.toFixed(5) + b +
+		'Tiles x:' + point.tileX + ' y:' + point.tileY + b +
+		'Tile ul lat:' + point.ulTileLat.toFixed(5) + ' lon:' + point.ulTileLon.toFixed(5) + b +
+		'Tile delta lat:' + point.deltaLat.toFixed(5) + ' lon:' + point.deltaLon.toFixed(5) + b +
+		'Point x: ' + point.ptX.toFixed(5) + ' y:' + point.ptY.toFixed(5) + b +
+		'Offset x:' + point.offsetX + ' y:' + point.offsetY + b +
+		b;
+	}
+
+	function displayMessage( title, point, lat, lon ) {
+		var b = '<br>';
+		return title + ' lat:' + lat.toFixed(5) + ' lon:' + lon.toFixed(5) + b +
+		'Tiles x:' + point.tileX + ' y:' + point.tileY + b +
+		'Tile ul lat:' + point.ulTileLat.toFixed(5) + ' lon:' + point.ulTileLon.toFixed(5) + b +
+		'Tile delta lat:' + point.deltaLat.toFixed(5) + ' lon:' + point.deltaLon.toFixed(5) + b +
+		'Point x: ' + point.ptX.toFixed(5) + ' y:' + point.ptY.toFixed(5) + b +
+		//'Offset x:' + point.offsetX + ' y:' + point.offsetY + b +
+		b;
+	}
+
+
+// axes
+	uf.scene.add( new THREE.ArrowHelper( v(1, 0, 0), v(0, 0, 0), 200, 0xcc0000) );
+	uf.scene.add( new THREE.ArrowHelper( v(0, 1, 0), v(0, 0, 0), 500, 0x00cc00) );
+	uf.scene.add( new THREE.ArrowHelper( v(0, 0, 1), v(0, 0, 0), 200, 0x0000cc) );
+
+	function v( x, y, z ){ return new THREE.Vector3( x, y, z ); }
+
+	function updatePosition() {
+	var binormal = new THREE.Vector3();
+	var normal = new THREE.Vector3();
+		t += 0.002;
+		t = t >= 1.0 ? 0 : t;
+
+		var pos = tube.path.getPointAt( t );
+		var segments = tube.tangents.length;
+		var pickt = t * segments;
+		var pick = Math.floor( pickt );
+		var pickNext = ( pick + 1 ) % segments;
+		binormal.subVectors( tube.binormals[ pickNext ], tube.binormals[ pick ] );
+		binormal.multiplyScalar( pickt - pick ).add( tube.binormals[ pick ] );
+
+		var dir = tube.path.getTangentAt( t );
+		normal.copy( binormal ).cross( dir );
+		pos.add( normal.clone() );
+
+		cameraBot.position = pos;
+		var lookAt = tube.path.getPointAt( ( t + 30 / tube.path.getLength() ) % 1 );
+		cameraBot.matrix.lookAt(cameraBot.position, lookAt, normal);
+		cameraBot.rotation.setFromRotationMatrix( cameraBot.matrix, cameraBot.rotation.order );
+
+		aircraft.position = tube.path.getPointAt( ( t + 60 / tube.path.getLength() ) % 1 );
+		var aircraftLookAt = tube.path.getPointAt( ( t + 90 / tube.path.getLength() ) % 1 );
+		aircraft.matrix.lookAt(aircraft.position, aircraftLookAt, normal);
+		aircraft.rotation.setFromRotationMatrix( aircraft.matrix, aircraft.rotation.order );
+	}
+
+	function toggleFollow() {
+		follow = follow === false;
+	}
+
+	function animate() {
+		requestAnimationFrame( animate );
+		uf.controls.update();
+		uf.renderer.render( uf.scene, follow === true ? splineCamera : uf.camera );
+		stats.update();
+//		renderer.render( scene, follow === true ? splineCamera : camera );
+		delta += clock.getDelta();
+		if ( tube && delta > 0.025 ) {
+			updatePosition();
+			delta = 0;
+		}
+	}
+
+</script>
+</body>
+</html>
