@@ -1,0 +1,33 @@
+e020n40.Bathymetry.srtm,xx,yy,lon,lat,0 Saudi Arabia $$$
+e020n90.Bathymetry.srtm,xx,yy,lon,lat,1 Russia $$$
+e020s10.Bathymetry.srtm,xx,yy,lon,lat,2 east Africa $$$
+e060n40.Bathymetry.srtm,xx,yy,lon,lat,3 India
+e060n90.Bathymetry.srtm,xx,yy,lon,lat,4 Siberia $$$
+e060s10.Bathymetry.srtm,xx,yy,lon,lat,5 Indian Ocean
+e060s60.Bathymetry.srtm,xx,yy,lon,lat,6 Antarctica ***
+e100n40.Bathymetry.srtm,xx,yy,lon,lat,7 China
+e100n90.Bathymetry.srtm,xx,yy,lon,lat,8 Sibera / Japan $$$
+e100s10.Bathymetry.srtm,xx,yy,lon,lat,9 Australia ***
+e120s60.Bathymetry.srtm,xx,yy,lon,lat,10 Antarctic
+e140n40.Bathymetry.srtm,xx,yy,lon,lat,11 New Guinea Japan ***
+e140n90.Bathymetry.srtm,xx,yy,lon,lat,12 Siberia $$$
+e140s10.Bathymetry.srtm,xx,yy,lon,lat,13 New Zealand xxx
+w000s60.Bathymetry.srtm,xx,yy,lon,lat,14 Antartica
+w020n40.Bathymetry.srtm,xx,yy,lon,lat,15 west Africa
+w020n90.Bathymetry.srtm,xx,yy,lon,lat,16 Spitzbergen Scandanvia $$$
+w020s10.Bathymetry.srtm,xx,yy,lon,lat,17 west South Africa
+w060n40.Bathymetry.srtm,xx,yy,lon,lat,18 Brazil
+w060n90.Bathymetry.srtm,xx,yy,lon,lat,19 Greeanland $$$
+w060s10.Bathymetry.srtm,xx,yy,lon,lat,20 South Africa
+w060s60.Bathymetry.srtm,xx,yy,lon,lat,21 Antarctica
+w100n40.Bathymetry.srtm,xx,yy,lon,lat,22 Caribbean
+w100n90.Bathymetry.srtm,xx,yy,lon,lat,23 Baffin Island $$$
+w100s10.Bathymetry.srtm,xx,yy,lon,lat,24 Chile / Argentina
+w120s60.Bathymetry.srtm,xx,yy,lon,lat,25 Antarctica
+w140n40.Bathymetry.srtm,xx,yy,lon,lat,26 San Francisco $$$
+w140n90.Bathymetry.srtm,xx,yy,lon,lat,27 West Canada $$$
+w140s10.Bathymetry.srtm,xx,yy,lon,lat,28 Ocean
+w180n40.Bathymetry.srtm,xx,yy,lon,lat,29 Hawaii $$$
+w180n90.Bathymetry.srtm,0-15,0-50,-180/-140,85/40 30 Alaska $$$
+w180s10.Bathymetry.srtm,xx,yy,lon,lat,31 Ocean
+w180s60.Bathymetry.srtm,xx,yy,lon,lat,32 Antarctica

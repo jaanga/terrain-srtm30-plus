@@ -10,20 +10,18 @@ Click on any of the 33 links in the web page below to view the sample PNG files:
 
 * All 33 Scripps Institute files translated into PNG files
 * First 12 files are in the beautiful (but as yet unusable BGR) format. Remaining files are standard RGB heightmaps
-* Credits and attributions are available at: <http://caper.ws/terrain-srtm30-plus/>
+* Credits and attributions are available at: <http://aceit.us/terrain-srtm30-plus/>
 
-[SRTM to PNG Source Code](https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/srtm-to-png/)  
+[HGT to PNG Source Code](https://github.com/jaanga/terrain-plus/tree/gh-pages/cookbook/hgt-to-png/)  
 
 * R2 is current
 
 ## Concept
 
 ### Mission
-
 Provide a fast simple utility that translates SRTM or HGT binary data files into PNG files 
 
 ### Vision
-
 Make it fast and easy to access 3D elevation data over the Web
 
 ## Features
@@ -45,8 +43,8 @@ Make it fast and easy to access 3D elevation data over the Web
 
 You have two ways of viewing the Jaanga files:
 
-* Web page hosted on GitHub: [jaanga.github.io]( http://jaanga.github.io/terrain-srtm30-plus/srtm-to-png/ "view the files as apps." ) <input value="<< You are now probably here." size=28 style="font:bold 12pt monospace;border-width:0;" >  
-* Source code on GitHub: [github.com/jaanga]( https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/srtm-to-png/ "View the files as source code." ) <scan style=display:none ><< You are now probably here.</scan>
+* Web page hosted on GitHub: [jaanga.github.io]( http://jaanga.github.io/terrain-plus/cookbook/hgt-to-png/ "view the files as apps." ) <input value="<< You are now probably here." size=28 style="font:bold 12pt monospace;border-width:0;" >  
+* Source code on GitHub: [github.com/jaanga]( https://github.com/jaanga/terrain-plus/tree/gh-pages/cookbook/hgt-to-png/ "View the files as source code." ) <scan style=display:none ><< You are now probably here.</scan>
 
 
 ### Copyright and License

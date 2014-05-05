@@ -1,4 +1,4 @@
-[Jaanga](../../../index.html ) &raquo;<br>[Terrain Plus]( ../../index.html ) &raquo;<br>[Cookbook]( ../index.html ) &raquo;<br>[HGT to PNG]( ./index.html )
+[Jaanga](../../index.html ) &raquo;<br>[Terrain SRTM30 Plus]( ../index.html ) &raquo;<br>[SRTM to PNG]( ./index.html )
 ===
 
 <p id=rm >
@@ -8,5 +8,5 @@
 
 ****
 
-[Source Code on GitHub]( https://github.com/jaanga/terrain-plus/tree/gh-pages/cookbook/hgt-to-png/ )  
+[Source Code on GitHub]( https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/srtm-to-png/ )  
 [Copyright and License]( https://github.com/jaanga/jaanga.github.io/blob/master/jaanga-copyright-and-mit-license.md )

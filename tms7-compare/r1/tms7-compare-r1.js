@@ -2,7 +2,7 @@
 	var title = document.title;
 
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020n40.Bathymetry.png';  // 0 Saudi Arabia $$$
-	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020n90.Bathymetry.png';  // 1 Russia $$$
+//	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020n90.Bathymetry.png';  // 1 Russia $$$
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e020s10.Bathymetry.png';  // 2 east Africa $$$
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e060n40.Bathymetry.png';  // 3 India
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/e060n90.Bathymetry.png';  // 4 Siberia $$$
@@ -29,9 +29,9 @@
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/w120s60.Bathymetry.png';  // 25 Antarctica
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/w140n40.Bathymetry.png';  // 26 San Francisco $$$
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/w140n90.Bathymetry.png';  // 27 West Canada $$$
-//	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/w140s10.Bathymetry.png';  // Ocean
-//	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/w180n40.Bathymetry.png';  // Hawaii $$$
-//	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/w180n90.Bathymetry.png';  // 30 Alaska $$$
+//	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/w140s10.Bathymetry.png';  // 28 Ocean
+//	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/w180n40.Bathymetry.png';  // 29 Hawaii $$$
+	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/w180n90.Bathymetry.png';  // 30 0-15, 0-50, -180 ~ -140, 85-40, Alaska $$$
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/w180s10.Bathymetry.png';  // 31 Ocean
 //	var fileLink = 'http://aceit.us/terrain-srtm30-plus/png/w180s60.Bathymetry.png';  // 32 Antarctica
 
@@ -197,7 +197,6 @@ console.log( tileStartY, tileFinishY);
 		tileTextLon.style.cssText = 'position: absolute; left: 600px; top: ' + ( tileDeltaY * 23 + 50 ) + 'px; ';
 		tileTextLon.innerHTML = '';
 
-
 			var currentTileX = tileStartX;
 			i = 0;
 			while ( currentTileX <= tileFinishX - 1 ) {
@@ -212,7 +211,7 @@ console.log( tileStartY, tileFinishY);
 					map.height = 20;
 					map.style.cssText = 'border: 1px solid black; position: absolute; ';
 					map.style.cssText += 'left: ' + ( 600 + i * 23 ) + 'px; top: ' + ( j * 23 ) + 'px;';
-					map.src = '../../tms7/' + currentTileX + '/' + currentTileY + '.png';
+					map.src = '../../srtm-to-tms7/tms7-dev/' + currentTileX + '/' + currentTileY + '.png';
 
 /*
 					var tile = document.body.appendChild( document.createElement( 'canvas' ) );
@@ -292,8 +291,6 @@ console.log( tileStartY, tileFinishY);
 
 			} 
 */
-
-
 
 		var info = document.body.appendChild( document.createElement( 'div' ) );
 		info.style.cssText = 'background-color: #ccc; padding: 10px; opacity: 0.85; position: absolute; right: 20px; top: 50px; ';
