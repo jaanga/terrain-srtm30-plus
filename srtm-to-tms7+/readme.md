@@ -1,4 +1,4 @@
-SRTM to PNG Utility Read Me
+SRTM to TMS7+ Read Me
 ===
 
 ### Sample Files
@@ -6,20 +6,17 @@ SRTM to PNG Utility Read Me
 Many thanks to the The Satellite Geodesy research group at Scripps Institution of Oceanography, University of California San Diego 
 for preparing and maintaining this data.
 
-Click on any of the 33 links in the web page below to view the sample PNG files:
 
-* All 33 Scripps Institute files translated into PNG files
-* First 12 files are in the beautiful (but as yet unusable BGR) format. Remaining files are standard RGB heightmaps
 * Credits and attributions are available at: <http://aceit.us/terrain-srtm30-plus/>
 
-[HGT to PNG Source Code](https://github.com/jaanga/terrain-plus/tree/gh-pages/cookbook/hgt-to-png/)  
+[SRTM to TMS7+ Source Code](https://github.com/jaanga/terrain-plus/tree/gh-pages/cookbook/srtm-to-tms7+/ )  
 
 * R2 is current
 
 ## Concept
 
 ### Mission
-Provide a fast simple utility that translates SRTM or HGT binary data files into PNG files 
+Provide a fast simple utility that translates SRTM or HGT binary data files into TMS7+ files 
 
 ### Vision
 Make it fast and easy to access 3D elevation data over the Web
@@ -28,8 +25,7 @@ Make it fast and easy to access 3D elevation data over the Web
 
 * Built with Node.js  
 * Reads a directory of SRTM files, translates them to PNGs and writes them to disk  
-* Only 62 lines of code
-* Translates a 56 MB file to ~30 MB PNG in under 10 seconds
+
 
 
 ## Road Map
@@ -43,8 +39,8 @@ Make it fast and easy to access 3D elevation data over the Web
 
 You have two ways of viewing the Jaanga files:
 
-* Web page hosted on GitHub: [jaanga.github.io]( http://jaanga.github.io/terrain-plus/cookbook/hgt-to-png/ "view the files as apps." ) <input value="<< You are now probably here." size=28 style="font:bold 12pt monospace;border-width:0;" >  
-* Source code on GitHub: [github.com/jaanga]( https://github.com/jaanga/terrain-plus/tree/gh-pages/cookbook/hgt-to-png/ "View the files as source code." ) <scan style=display:none ><< You are now probably here.</scan>
+* Web page hosted on GitHub: [jaanga.github.io]( http://jaanga.github.io/terrain-plus/cookbook/srtm-to-tms7+/ "view the files as apps." ) <input value="<< You are now probably here." size=28 style="font:bold 12pt monospace;border-width:0;" >  
+* Source code on GitHub: [github.com/jaanga]( https://github.com/jaanga/terrain-plus/tree/gh-pages/cookbook/srtm-to-tms7+/ "View the files as source code." ) <scan style=display:none ><< You are now probably here.</scan>
 
 
 ### Copyright and License

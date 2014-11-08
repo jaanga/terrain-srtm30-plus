@@ -2,7 +2,7 @@
 
 	var folderSource = '../'; // '../../srtm/';
 //	var folderSource = 'http://caper.ws/terrain-srtm30-plus/srtm/';
-	var folderPNG = '../../tms7/';
+	var folderPNG = '../../tms7-dev/';
 	var fileList = 'srtm30-plus-files.csv';
 	var fileSelected = 'e020n40.Bathymetry.srtm';
 
@@ -28,6 +28,8 @@ console.log( obj );
 	}
 */
 	function init() {
+
+
 		var css = document.body.appendChild( document.createElement('style') );
 		css.innerHTML = 'body { font: 600 12pt monospace; margin: 0; overflow: hidden; }' +
 			'h1 a {text-decoration: none; }' +

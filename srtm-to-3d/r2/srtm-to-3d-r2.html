@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang=en >
+<head>
+<title>SRTM to 3D</title>
+<meta charset=utf-8 />
+<meta name=viewport content=width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0 />
+<link rel=stylesheet href=http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css /><!-- http://fontawesome.io/icons/ -->
+</head>
+<body>
+<script src = http://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src = http://mrdoob.github.io/three.js/examples/js/controls/TrackballControls.js ></script>
+<script src=ja-core.js ></script>
+<script src=srtm-to-3d-r2.js ></script>
+<script>
+
+	JA.init = function() {
+
+		JA.titleIcon = '<i class="fa fa-globe"></i>';  // ultimately should be something created on the fly
+		JA.TitleText = '"view SRT< binary data as 3D topology"';
+
+		JA.container = document.body.appendChild( document.createElement( 'div' ) );
+
+		JA.addCSS();
+		JA.addMenu();
+
+		JA.addMessageArea();
+
+		init();
+		animate();
+
+	};
+
+	JA.init();
+
+
+// Thank you Mr.doob
+
+
+</script>
+</body>
+</html>

@@ -1,6 +1,38 @@
 Dev Notes
 ===
 
+2014-11-05 ~ Theo
+Many nice things since last update.
+
+It turns out, I could down load topo30 - a 1.8+ GB file and load bytes of it using JavaScript. All so easy, yet difficult to belive
+
+Can access bytes 180000000 to 180000511 in 18 ms.
+
+This should make everything much easier.
+
+There are 43200 columns and 21600 rows.
+
+Width/X/Lon
+Need 128 TMS 7+ columns or 337.5 pixels per TMS. Perhaps can alternate 337 and 338 width columns
+
+Height/Y/Lat
+Needs to be calculated tile by tile.
+
+Top lat is 85.0511.
+
+Pixels from top = 120 * (90 - 85.0511) = 593.8679999999994 = 594
+ 
+Equator at pixel 10800. 62 more to figure out. then flip for southern latitudes. ;-) 
+
+All moving nicely today...
+
+
+2014-05-06 ~ Theo
+I have been bashing my head against cropping the big srtm30 plus files into smaller files. 
+It's complicated and still a fail. Maybe I should try the de Ferranti files. 1 degree x 1 degree.
+As and when I get that working, I can always come here and split the Scripps files into 1x1 files.
+
+
 2014-04-29 ~ Theo
 
 Several of the directories underneath have their own dev notes.

@@ -50,7 +50,7 @@
 		xmlHttp.responseType = "arraybuffer";
 		xmlHttp.open( 'GET', fname, true );
 		xmlHttp.send( null );
-		xmlHttp.onload = function() { parseData( xmlHttp.response, fname ); } ;
+		xmlHttp.onload = function () { parseData( xmlHttp.response, fname ); } ;
 	}
 
 	function parseData( arrayBuffer, fname) {
@@ -283,7 +283,7 @@ console.log( 'Load time in ms: ', new Date() - startTime );
 	}
 
 	function saveIt() {
-		canvas.toBlob( function(blob) {
+		canvas.toBlob( function ( blob ) {
 			saveAs( blob, files[ selSRTM.selectedIndex ].replace('.srtm','') + '.png' );
 		});
 		console.log('saving...' ); 

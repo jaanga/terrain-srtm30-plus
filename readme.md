@@ -28,7 +28,10 @@ The 33 SRTM30 Plus files - available unzipped here:
 
 <http://caper.ws/terrain-srtm30-plus/srtm/>
 
-* Rather than clogging up GitHub, the sample files are on an external server
+* "This data consists of 33 files of global topography in the same format as the SRTM30 products distributed by the USGS EROS data center."
+* "The grid resolution is 30 second which is roughly one kilometer."
+
+* Rather than clogging up GitHub with 1.73 GB of data, the sample files are on an external server
 * Extra benefit: the directory is CORS-enabled and therefore the files can be accessed by any script
 * Credits and attributions are available at: <http://caper.ws/terrain-srtm30-plus/>
 

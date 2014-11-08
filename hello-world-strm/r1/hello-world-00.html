@@ -1,0 +1,89 @@
+﻿<!doctype html>
+<html lang=en>
+<head>
+<title>Jaanga Terrain Viewer ~ Hello World</title>
+<meta charset=utf-8>
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+</head>
+<body>
+<script src = http://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src = http://mrdoob.github.io/three.js/examples/js/controls/TrackballControls.js ></script>
+<script>
+
+	var sourceDir = 'c:/temp/tms7+/'; // 'terrain/0/' 'terrain/7/' etc
+	var x = 20;
+	var y = 49;
+	scale = 0.015;
+	var heightMap;
+
+	var renderer, scene, camera, controls, heightMap;
+
+	init();
+	animate();
+
+	function init() {
+
+		var hashes = location.hash.split('#');
+		sourceDir = ( hashes[1] !== undefined ) ? hashes[1] : sourceDir;
+		x = ( hashes[2] !== undefined ) ? hashes[2] : x;
+		y = ( hashes[3] !== undefined ) ? hashes[3] : y;
+		scale = ( hashes[4] !== undefined ) ? hashes[4] : scale;
+
+		document.body.style.cssText = 'margin: 0; overflow: hidden; }';
+
+		renderer = new THREE.WebGLRenderer( { alpha: 1, antialias: true, clearColor: 0xffffff }  );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild( renderer.domElement );
+		scene = new THREE.Scene();
+
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
+		camera.position.set( 0, 150, 200 );
+		controls = new THREE.TrackballControls( camera, renderer.domElement );
+
+		heightMap = document.createElement('img' )
+		heightMap.src =  sourceDir + '/' + x + '/' + y +'.png';
+		heightMap.onload = initCanvas;
+	}
+
+	function initCanvas() {
+		var canvas = document.createElement( 'canvas' );
+		canvas.width = heightMap.width;
+		canvas.height =  heightMap.height;
+		var context = canvas.getContext( '2d' );
+		context.drawImage( heightMap, 0, 0, canvas.width, canvas.height, 0, 0, 256, 256 );
+		imgd = context.getImageData( 0, 0, 256, 256 );
+		var pix = imgd.data;
+
+		var geometry = new THREE.PlaneGeometry( 200, 200, 255, 255);
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
+		var verts = geometry.vertices;
+		var material = new THREE.MeshNormalMaterial( { shading: THREE.SmoothShading } );
+//		scale = 0.01 * scale;
+min = 0; max = 0;
+
+		for (var i = 0, j = 0, len = pix.length; i < len; i += 4) {
+if ( pix[i + 1 ] < 128 ) console.log( 'cccc', i, pix[i + 1] );
+
+			elev = 256 * 256 * pix[i] + 256 * pix[i + 1] + pix[i + 2];
+
+			elev = ( elev < 32767 ) ? elev : -( 65536 - elev );
+			elev = ( elev > 2000 || elev < -5000 ) ? 0 : elev ;
+max = elev > max ? elev : max;
+min = elev < min ? elev : min;
+			verts[j++].y = scale * (  elev ) ;
+		}
+console.log( max, min );
+		var mesh = new THREE.Mesh( geometry, material );
+		mesh.geometry.computeFaceNormals();
+		mesh.geometry.computeVertexNormals();
+		scene.add( mesh );
+	}
+
+	function animate() {
+		requestAnimationFrame( animate );
+		controls.update();
+		renderer.render( scene, camera );
+	}
+</script>
+</body>
+</html>

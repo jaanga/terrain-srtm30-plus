@@ -1,13 +1,15 @@
 // SRTM: pole to pole ~ TMS +/-85
 // SRTM 120 data points per degree - both directions
 
+// command line: app file# new/old
+
 	var countPNG = ( process.argv[2] !== undefined ) ? parseInt( process.argv[2], 10 ) : 0;
 
 	var fs = require('fs');
 	var PNG = require('pngjs').PNG;
 
-	var folderSRTM = '../../srtm/';
-	var folderTMS7 = '/../tms7-dev/';  // has __dirname
+	var folderSRTM = 'c:/temp/srtm30-plus/';
+	var folderTMS7 = 'c:/temp/tms7+/';  // has __dirname
 	var fileNames;
 
 	var pi = Math.PI, pi05 = pi * 0.5, pi2 = pi + pi;
@@ -32,7 +34,7 @@
 				fileNames.push( files[i] );
 			}
 			countTMS = 0;
-console.log( 'start', fileNames[ countPNG] );
+// console.log( 'start', fileNames[ countPNG] );
 			readFile( fileNames[ countPNG ] );
 		});
 	}
@@ -46,17 +48,6 @@ console.log( 'start', fileNames[ countPNG] );
 	}
 
 	function processSRTM( fileSRTM, imageData ) {
-		var countX = 0;
-		var countY = 0;
-
-
-
-
-
-
-
-
-
 
 		var signLon = ( fileSRTM.substr( 0, 1 ) === 'w' ) ? -1 : 1;
 		var signLat = ( fileSRTM.substr( 4, 1 ) === 's' ) ? -1 : 1;
@@ -85,7 +76,8 @@ console.log( 'start', fileNames[ countPNG] );
 		var tileFinishLon = tile2lon( tileFinishX, zoomLevel );
 		var tileDeltaLon = tileFinishLon - tileStartLon;
 
-		var lonDeltaLevel7 = 360 / 128;
+// longitude degrees per tile at zoom level 7
+		var lonDeltaLevel7 = 360 / Math.pow( 2, 7);
 
 // latitude tileY
 		var latStart, latFinish, tileStartY, tileFinishY;
@@ -99,8 +91,8 @@ console.log( 'start', fileNames[ countPNG] );
 			latStart = latStartFile;
 			latFinish = tile2lat( 128, 0 );
 			tileStartY = lat2tile( latStart, zoomLevel );
-//			tileFinishY = 128;
-			tileFinishY = lat2tile( latFinish, zoomLevel ) + 1;
+			tileFinishY = 128;
+//			tileFinishY = lat2tile( latFinish, zoomLevel ) + 1;
 		} else {
 			latStart = latStartFile;
 			latFinish = latStart - latDelta;
@@ -114,12 +106,16 @@ console.log( 'start', fileNames[ countPNG] );
 		var tileDeltaLat = tileStartLat - tileFinishLat;
 
 		var currentLatTop, currentLatBottom, deltaLat;
-		var pngHeight = latDelta * 120;
-		var pngWidth = lonDelta * 120;
+		var srtmHeight = latDelta * 120;
+		var srtmWidth = lonDelta * 120;
 
 		var tmsWidth = Math.floor( lonDeltaLevel7 * 120 );
 		var tmsXoffset = Math.floor( tmsWidth * Math.abs( tileStartLon - lonStart ) / lonDeltaLevel7 );
-		var tmsXStart, tmsXFinish = tmsWidth;
+		var tmsXStart = tmsXoffset;
+		var tmsXFinish = tmsWidth;
+
+		var srtmXStart = 0; // tmsXoffset; // ?? or 0?
+		var srtmXFinish = tmsWidth - tmsXoffset;
 
 		var tmsYStart, tmsYFinish, tmsYoffset, tmsHeight;
 		if ( latStartFile === 90 ) {
@@ -127,27 +123,41 @@ console.log( 'start', fileNames[ countPNG] );
 		} else if ( latStartFile === 40 || latStartFile === -10 || latStartFile === -60 ) {
 			tmsYoffset = Math.floor( 120 * ( tileStartLat - latStart) );
 		}
-		var pngXStart = tmsXoffset; // ?? or 0?
-		var pngXFinish = tmsWidth - tmsXoffset;
-		var pngYStart, pngYFinish;
-// srtm goes to 90 but tms starts at 85...
 
-//tileFinishX--,  tileFinishY--;
+		var srtmYStart, srtmYFinish;
 
+// srtm goes to 90 but tms starts at 85+...
 
+		var txt = '\nprocessSRTM ' + fileSRTM + '\n' + 
+			'lonStart:' + lonStart + ' finish:' + lonFinish +  '\n' +
+			'tileStartLon:' + tileStartLon + ' Finish:' + tileFinishLon + '\n' +
+			'tileX start:' + tileStartX + ' finish:' + tileFinishX + ' delta: ' + tileDeltaX + '\n' +
+			'\n' +
+			'latStart:' + latStart + ' finish:' + latFinish + '\n' + 
+			'tileStartLat:' + tileStartLat.toFixed(3) + ' tileFinishLat:' + tileFinishLat.toFixed(3) + '\n' +
+			'tileY start:' + tileStartY + ' finishY:' + tileFinishY + ' delta: ' + tileDeltaY + '\n' + 
+			'\n' +
+			'srtmWidth:' + srtmWidth + ' srtmHeight:' + srtmHeight + '\n' +
 
+			'lonDeltaLevel7:' + lonDeltaLevel7 + '\n' +
+			'tmsWidth:' + tmsWidth + ' total pixels:' + (tmsWidth * tileDeltaX) + '\n' +
+			'tmsXoffset:' + tmsXoffset + ' tmsXStart:' + tmsXStart + ' tmsXFinish:' + tmsXFinish + '\n' +
+			'srtmXStart:' + srtmXStart + ' srtmXFinish:' + srtmXFinish + '\n' +
+			'\n' +
+			'tmsYoffset:' + tmsYoffset + ' tmsXStart:' + tmsYStart + ' tmsXFinish:' + tmsYFinish + '\n' +
+		'';
 
+console.log( txt );
 
-
+tileFinishX--;  tileFinishY--;
 
 		for ( var tileX = tileStartX; tileX < tileFinishX; tileX++ ) {
 
-
-
-
-
 			tmsXStart = ( tileX === tileStartX ) ? tmsXoffset : 0;
-			countY = 0;
+			if ( tileX === tileStartX ) {
+				srtmXStart = tmsXoffset;
+			}
+
 			for ( var tileY = tileStartY; tileY < tileFinishY; tileY++ ) {
 				currentLatTop = tile2lat( tileY, zoomLevel );
 				currentLatBottom = tile2lat( tileY + 1, zoomLevel );
@@ -155,54 +165,61 @@ console.log( 'start', fileNames[ countPNG] );
 				tmsHeight = Math.floor( 120 * deltaLat );
 
 				if ( tileY === tileStartY ) {
-					pngYStart = 0;
+					srtmYStart = 0;
 					if ( latStartFile === 90 ) {
-						pngYFinish = tmsYoffset;
+						srtmYFinish = tmsYoffset;
 					} else {
-						pngYFinish = tmsHeight;
+						srtmYFinish = tmsHeight;
 					}
 					tmsYStart = tmsYoffset;
 					tmsYFinish = tmsHeight;
 				} else {
 					if ( latStartFile === 90 ) {
-						pngYStart = pngYFinish;
+						srtmYStart = srtmYFinish;
 					} else {
-						pngYStart = pngYFinish - tmsYoffset;
+						srtmYStart = srtmYFinish - tmsYoffset;
 					}
-					pngYFinish += tmsHeight;
+					srtmYFinish += tmsHeight;
 
 					tmsYFinish = tmsHeight;
-					if ( pngYFinish > pngHeight ) {
-						tmsYFinish = tmsHeight; // - 125; // - ( pngYFinish - pngHeight );
-						pngYFinish = pngHeight;
+					if ( srtmYFinish > srtmHeight ) {
+						tmsYFinish = tmsHeight; // - 125; // - ( pngYFinish - srtmHeight );
+						srtmYFinish = srtmHeight;
 					}
 					tmsYStart = 0;
 				}
 
+
+// add something to command line
 				if ( process.argv[3] ) {
-					processTMSnew ( imageData, tileX, tileY, pngXStart, pngXFinish, pngYStart, pngYFinish, pngWidth, tmsXStart, tmsXFinish, tmsYStart, tmsYFinish, tmsWidth, tmsHeight );
+					processTMSnew ( imageData, tileX, tileY, srtmXStart, srtmXFinish, srtmYStart, srtmYFinish, srtmWidth, tmsXStart, tmsXFinish, tmsYStart, tmsYFinish, tmsWidth, tmsHeight );
 				} else if ( tileX === tileStartX || tileX === tileFinishX - 1 || tileY === tileStartY || tileY === tileFinishY - 1 ) {
-					processTMS ( imageData, tileX, tileY, pngXStart, pngXFinish, pngYStart, pngYFinish, pngWidth, tmsXStart, tmsXFinish, tmsYStart, tmsYFinish, tmsWidth, tmsHeight );
+					processTMS ( imageData, tileX, tileY, pngXStart, pngXFinish, pngYStart, pngYFinish, srtmWidth, tmsXStart, tmsXFinish, tmsYStart, tmsYFinish, tmsWidth, tmsHeight );
 					setTimeout( function() { count++; }, 200);
 				}
+
 			}
-			pngXStart = pngXFinish - 1;
-			pngXFinish += tmsWidth;
+			srtmXStart = srtmXFinish - 1;
+			srtmXFinish += tmsWidth;
 			tmsXFinish = tmsWidth;
-			if ( pngXFinish > pngWidth ) {
-				tmsXFinish = tmsWidth - ( pngXFinish - pngWidth ) + 3;
-				pngXFinish = pngWidth;
+			if ( srtmXFinish > srtmWidth ) {
+				tmsXFinish = tmsWidth - ( srtmXFinish - srtmWidth ) + 1;
+				srtmXFinish = srtmWidth;
 			}
+
 		}
-console.log( 'processSRTM' , countPNG, fileSRTM, imageData );
+
 		countPNG++;
 //		if ( countPNG < fileNames.length ) {
 		if ( countPNG < limit) {
 			readFile( fileNames[ countPNG ] );
 		}
+
 	}
 
-	function processTMSnew( imageData, tileX, tileY, pngXStart, pngXFinish, pngYStart, pngYFinish, pngWidth, tmsXStart, tmsXFinish, tmsYStart, tmsYFinish, tmsWidth, tmsHeight) {
+	function processTMSnew( imageData, tileX, tileY, pngXStart, pngXFinish, pngYStart, pngYFinish, srtmWidth, tmsXStart, tmsXFinish, tmsYStart, tmsYFinish, tmsWidth, tmsHeight) {
+		if ( tileY > 127 ) return;
+console.log('start processTMSnew' );
 		var tms = new PNG({
 			width: tmsWidth,
 			height: tmsHeight,
@@ -212,10 +229,11 @@ console.log( 'processSRTM' , countPNG, fileSRTM, imageData );
 		var tmsIndex = 0, i = 0;
 		var elevation;
 		var pngY = pngYStart;
-		var indexPNG = 2 * ( pngWidth * pngY + pngXStart);
+		var indexPNG = 2 * ( srtmWidth * pngY + pngXStart);
 		for ( var tmsY = 0; tmsY < tmsHeight; tmsY++ ) {
-			if ( tmsY > tmsYStart ) indexPNG = 2 * ( pngWidth * pngY++ + pngXStart);
+			if ( tmsY > tmsYStart ) indexPNG = 2 * ( srtmWidth * pngY++ + pngXStart);
 			for ( var tmsX = 0; tmsX < tmsWidth; tmsX++ ) {
+
 				if ( tmsX > tmsXStart && tmsX < tmsXFinish && tmsY > tmsYStart && tmsY < tmsYFinish) {
 					i = 4 * tmsIndex;
 					elevation = ( imageData[ indexPNG ] * 0xff + imageData[ indexPNG + 0x1 ] );
@@ -226,6 +244,7 @@ console.log( 'processSRTM' , countPNG, fileSRTM, imageData );
 					indexPNG += 2;
 				} else {
 // painting nothing is not good
+
 					i = 4 * tmsIndex;
 					tmsData[ i ] = 0xff;
 					tmsData[ i + 1 ] = 0xff;
@@ -238,42 +257,43 @@ console.log( 'processSRTM' , countPNG, fileSRTM, imageData );
 /*
 		tms.pack().pipe( fs.createWriteStream( __dirname + folderTMS7 + tileX + '/' + tileY + '.png' ) );
 		countTMS++;
-console.log( 'l', countTMS, tileX, tileY, 'pxs/f', pngXStart, pngXFinish, 'pys/f', pngYStart, pngYFinish, 'ts', tmsYStart, 'tmsw/h', tmsWidth, tmsHeight, 'pw', pngWidth, 'tm', new Date() - startTimeApp );
+console.log( 'l', countTMS, tileX, tileY, 'pxs/f', pngXStart, pngXFinish, 'pys/f', pngYStart, pngYFinish, 'ts', tmsYStart, 'tmsw/h', tmsWidth, tmsHeight, 'pw', srtmWidth, 'tm', new Date() - startTimeApp );
 */
 
-		var wstream = fs.createWriteStream( __dirname + folderTMS7 + tileX + '/' + tileY + '.png' );
+		var wstream = fs.createWriteStream( folderTMS7 + tileX + '/' + tileY + '.png' );
 		wstream.on( 'error', function () {
-console.log( '*** Errror ', countTMS, tileX, tileY, 'pxs/f', pngXStart, pngXFinish, 'pys/f', pngYStart, pngYFinish, 'ts', tmsYStart, 'tmsw/h', tmsWidth, tmsHeight, 'pw', pngWidth, 'tm', new Date() - startTime );
+console.log( '*** TMS New Error ', countTMS, tileX, tileY, 'pxs/f', pngXStart, pngXFinish, 'pys/f', pngYStart, pngYFinish, 'ts', tmsYStart, 'tmsw/h', tmsWidth, tmsHeight, 'pw', srtmWidth, 'tm', new Date() - startTime );
 		});
 		wstream.on( 'finish', function () {
 setTimeout( function() { count++; }, 100);
-console.log( 'lnew', countPNG - 1, countTMS, tileX, tileY, 'pxs/f', pngXStart, pngXFinish, 'pys/f', pngYStart, pngYFinish, 'ts', tmsYStart, 'tmsw/h', tmsWidth, tmsHeight, 'pw', pngWidth, 'tm', new Date() - startTime );
+console.log( 'lnew', countPNG - 1, countTMS, tileX, tileY, 'pxs/f', pngXStart, pngXFinish, 'pys/f', pngYStart, pngYFinish, 'ts', tmsYStart, 'tmsw/h', tmsWidth, tmsHeight, 'pw', srtmWidth, 'tm', new Date() - startTime );
 
 		countTMS++;
 		});
 		tms.pack().pipe( wstream );
 	}
 
-	function processTMS( imageData, tileX, tileY, pngXStart, pngXFinish, pngYStart, pngYFinish, pngWidth, tmsXStart, tmsXFinish, tmsYStart, tmsYFinish, tmsWidth, tmsHeight) {
-// console.log('log', countPNG, tileX, tileY );
-//		if ( tileY > 127 ) return; 
-		fs.createReadStream( __dirname + folderTMS7 + tileX + '/' + tileY + '.png' )
+	function processTMS( imageData, tileX, tileY, pngXStart, pngXFinish, pngYStart, pngYFinish, srtmWidth, tmsXStart, tmsXFinish, tmsYStart, tmsYFinish, tmsWidth, tmsHeight) {
+//console.log('log', countPNG, tileX, tileY );
+		if ( tileY > 127 ) return; 
+		fs.createReadStream( folderTMS7 + tileX + '/' + tileY + '.png' )
 			.pipe( new PNG() )
+
 			.on('error', function() {
-console.log('error', countPNG - 1, tileX, tileY );
-// dangerous				processTMSnew( imageData, tileX, tileY, pngXStart, pngXFinish, pngYStart, pngYFinish, pngWidth, tmsXStart, tmsXFinish, tmsYStart, tmsYFinish, tmsWidth, tmsHeight);
+console.log('read error', countPNG - 1, tileX, tileY );
+// dangerous				processTMSnew( imageData, tileX, tileY, pngXStart, pngXFinish, pngYStart, pngYFinish, srtmWidth, tmsXStart, tmsXFinish, tmsYStart, tmsYFinish, tmsWidth, tmsHeight);
 			})
 
 			.on('parsed', function () {
-console.log('start' );
+//console.log('start' );
 setTimeout( function() { count++; }, 200);
 				var tmsData = this.data;
 				var tmsIndex = 0, i = 0;
 				var elevation;
 				var pngY = pngYStart;
-				var indexPNG = 2 * ( pngWidth * pngY + pngXStart);
+				var indexPNG = 2 * ( srtmWidth * pngY + pngXStart);
 				for ( var tmsY = 0; tmsY < tmsHeight; tmsY++ ) {
-					if ( tmsY > tmsYStart ) indexPNG = 2 * ( pngWidth * pngY++ + pngXStart);
+					if ( tmsY > tmsYStart ) indexPNG = 2 * ( srtmWidth * pngY++ + pngXStart);
 					for ( var tmsX = 0; tmsX < tmsWidth; tmsX++ ) {
 						if ( tmsX > tmsXStart && tmsX < tmsXFinish && tmsY > tmsYStart && tmsY < tmsYFinish) {
 							i = 4 * tmsIndex;
@@ -296,13 +316,13 @@ setTimeout( function() { count++; }, 200);
 					}
 				}
 
-				var wstream = fs.createWriteStream( __dirname + folderTMS7 + tileX + '/' + tileY + '.png' );
+				var wstream = fs.createWriteStream( folderTMS7 + tileX + '/' + tileY + '.png' );
 				wstream.on('error', function () {
-console.log( '*** Errror ', countTMS, tileX, tileY, 'pxs/f', pngXStart, pngXFinish, 'pys/f', pngYStart, pngYFinish, 'ts', tmsYStart, 'tmsw/h', tmsWidth, tmsHeight, 'pw', pngWidth, 'tm', new Date() - startTime );
+console.log( '*** TMS Error ', countTMS, tileX, tileY, 'pxs/f', pngXStart, pngXFinish, 'pys/f', pngYStart, pngYFinish, 'ts', tmsYStart, 'tmsw/h', tmsWidth, tmsHeight, 'pw', srtmWidth, 'tm', new Date() - startTime );
 				});
 				wstream.on('finish', function () {
 setTimeout( function() { count++; }, 200);
-console.log( 'lex', countPNG - 1, countTMS, tileX, tileY, 'pxs/f', pngXStart, pngXFinish, 'pys/f', pngYStart, pngYFinish, 'ts', tmsYStart, 'tmsw/h', tmsWidth, tmsHeight, 'pw', pngWidth, 'tm', new Date() - startTime );
+console.log( 'lex', countPNG - 1, countTMS, 'tx', tileX, tileY, 'pxs/f', pngXStart, pngXFinish, 'pys/f', pngYStart, pngYFinish, 'ts', tmsYStart, 'tmsw/h', tmsWidth, tmsHeight, 'pw', srtmWidth, 'tm', new Date() - startTime );
 
 				countTMS++;
 				});
