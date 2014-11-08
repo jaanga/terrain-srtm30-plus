@@ -1,16 +1,16 @@
 unFlatland for SRTM30 Plus Files Read Me
 ===========
 
-[Web page view]( http://jaanga.github.io/jaanga-terrain/terrain-srtm30-plus/srtm-to-3d/index,html "View files with docBrowser" ) &nbsp;
-[Source code view]( https://github.com/XXX/XXX/tree/gh-pages/XXX/ "View files with GitHub")
+[Web page view]( http://jaanga.github.io/terrain-srtm30-plus/srtm-to-3d/index.html "View files with docBrowser" ) &nbsp;
+[Source code view]( https://github.com/jaanga/terrain-srtm30-plus/tree/gh-pages/srtm-to-3d "View files with GitHub")
 
 
 ### Live Demo
 
-<iframe src="http://XXX.github.io/XXX/latest/index.html" width=100% height=500px class='overview' >
-There is an `iframe` here. It is not visible when viewed on github.com/XXX. To view, click 'Web page view' just above.
+<iframe src="http://jaanga.github.io/terrain-srtm30-plus/srtm-to-3d/latest/" width=100% height=500px class='overview' >
+There is an `iframe` here. It is not visible when viewed on github.com/jaanga. To view, click 'Web page view' just above.
 </iframe>
-_XXX - latest revision_ / [Full Screen]( http://XXX.github.io/latest/index.html)
+_XXX - latest revision_ / [Full Screen]( http://jaanga.github.io/terrain-srtm30-plus/srtm-to-3d/latest/ )
 
 
 ## Concept
