@@ -7,9 +7,9 @@
 </div>
 <br>
 
-<i class="fa fa-external-link"></i> [Live Demo]( http://jaanga.github.com/XXX/ ) 
+<i class="fa fa-external-link"></i> [Live Demo]( http://jaanga.github.io/terrain-srtm30-plus/srtm-to-3d/latest/ ) 
 
-<i class="fa fa-github"></i> [Source code on GitHub]( https://github.com/jaanga/XXX/tree/gh-pages/XXX/ )  
+<i class="fa fa-github"></i> [Source code on GitHub]( https://github.com/jaanga/terrain-srtm30-plus )  
 
 <i class="fa fa-copy"></i> [Copyright and license]( https://github.com/jaanga/jaanga.github.io/blob/master/jaanga-copyright-and-mit-license.md )
 <br>

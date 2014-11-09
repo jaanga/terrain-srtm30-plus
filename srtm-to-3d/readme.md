@@ -13,10 +13,14 @@ There is an `iframe` here. It is not visible when viewed on github.com/jaanga. T
 _XXX - latest revision_ / [Full Screen]( http://jaanga.github.io/terrain-srtm30-plus/srtm-to-3d/latest/ )
 
 
+
 ## Concept
 
 ### Mission  
 <!-- a statement of a rationale, applicable now as well as in the future -->
+* Fully interactive 3D viewers for data files created by the [Satellite Geodesy research group at Scripps 
+Institution of Oceanography, University of California San Diego]( http://topex.ucsd.edu/WWW_html/srtm30_plus.html )
+* Based on the unFlatland series of scripts that make creating 3D views easier
 
 ### Vision  
 <!--  a descriptive picture of a desired future state -->
@@ -60,6 +64,16 @@ This repository contains files that are at an early and volatile stage. Not all 
 
 
 ## Change Log
+
+2014-11-08 ~ Theo
+
+* Read me files and latest folder added
+
+2014-11-06 ~ Theo
+
+* R2 added
+
+ 
 
 
 

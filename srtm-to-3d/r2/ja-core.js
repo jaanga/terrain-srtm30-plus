@@ -24,15 +24,15 @@
 
 		JA.menu = JA.container.appendChild( document.createElement( 'div' ) );
 		JA.menu.id = 'movable';
-		JA.menu.title = 'Move this menu panel around the screen or iconize it';
+
 		JA.menu.addEventListener( 'mousedown', JA.mouseMove, false );
-		JA.menu.innerHTML = '<a id=closerIcon href=JavaScript:JA.toggleMenu(); ><p><i class="fa fa-bars"></i></p></a>' +
+		JA.menu.innerHTML = '<a id=closerIcon href=JavaScript:JA.toggleMenu(); ><p style=width:100%; ><i class="fa fa-bars"></i></p></a>' +
 			'<h1>' +
 				'<a href="" title=' + JA.TitleText + '>' + document.title + ' ' + JA.titleIcon + '</a> ' +
 			'</h1>' +
 			'<hr>' +
 		'';
-
+		closerIcon.title = 'Move this menu panel around the screen or iconize it';
 		window.addEventListener( 'mouseup', JA.mouseUp, false);
 
 	};

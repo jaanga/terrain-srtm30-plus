@@ -1,7 +1,8 @@
 // ftp://topex.ucsd.edu/pub/srtm30_plus/README.V10.txt
 
-	fileName = 'c:/temp/topo30';
-//	fileName = 'http://caper.ws:/terrain-srtm30-plus/topo30/topo30';
+	fileName = 'c:/temp/topo30/topo30';
+//	fileName = './topo30';
+//	fileName = 'http://caper.ws/terrain-srtm30-plus/topo30/topo30';
 
 	var latDefault = 39;
 	var lonDefault = -123;
@@ -19,62 +20,37 @@
 	var dataRows = 21600;
 
 	var xmlHttp;
-	var changes = 0;
-	var startTime = new Date();
-	var items = '';
-	var currentRow = startRow;
-	var elevations = [];
+	var changes;
+	var startTime;
 
-	var imageData;
-	var imageDataData;
+	var currentRow;
+	var elevations;
 
-//	var dirName = 'C:/temp/srtm30-plus-v10/';
-	var count = 0;
-	scale = 0.015;
+	scaleBase = 0.0015;
 
 	var renderer, scene, camera, controls, mesh;
 
 	function init () {
 
-		fileNames = ['e020n40.Bathymetry.srtm','e020n90.Bathymetry.srtm','e020s10.Bathymetry.srtm','e060n40.Bathymetry.srtm','e060n90.Bathymetry.srtm','e060s10.Bathymetry.srtm','e060s60.Bathymetry.srtm','e100n40.Bathymetry.srtm','e100n90.Bathymetry.srtm','e100s10.Bathymetry.srtm','e120s60.Bathymetry.srtm','e140n40.Bathymetry.srtm','e140n90.Bathymetry.srtm','e140s10.Bathymetry.srtm','w000s60.Bathymetry.srtm','w020n40.Bathymetry.srtm','w020n90.Bathymetry.srtm','w020s10.Bathymetry.srtm','w060n40.Bathymetry.srtm','w060n90.Bathymetry.srtm','w060s10.Bathymetry.srtm','w060s60.Bathymetry.srtm','w100n40.Bathymetry.srtm','w100n90.Bathymetry.srtm','w100s10.Bathymetry.srtm','w120s60.Bathymetry.srtm','w140n40.Bathymetry.srtm','w140n90.Bathymetry.srtm','w140s10.Bathymetry.srtm','w180n40.Bathymetry.srtm','w180n90.Bathymetry.srtm','w180s10.Bathymetry.srtm','w180s60.Bathymetry.srtm'];
-
 		divMsg1.innerHTML =
-//			'Select File <select id=selFile></select><br>' +
 			'Latitude <input type=range id=selLat min=-90 max=90 value=' + latDefault +
-					' style=width:256px; onchange=updateParameters();outLat.value=this.value; />' +
-				'<output id=outLat >' + latDefault + '</output>' + '<br>' +
-
+					' style=width:256px; onchange=outLat.value=this.value;updateParameters(); /> ' +
+				'<input type=number id=outLat value=' + latDefault + ' onchange=selLat.value=this.value;updateParameters(); class=number /><br>' +
 
 			'Longitude <input type=range id=selLon min=-180 max=180 value=' + lonDefault +
-					' style=width:256px; onchange=updateParameters();outLon.value=this.value; /> ' +
-				'<output id=outLon >' + lonDefault + '</output>' + '<br>' +
+					' onchange=outLon.value=this.value;updateParameters(); style=width:245px; /> ' +
+				'<input type=number id=outLon value=' + lonDefault + ' onchange=selLon.value=this.value;updateParameters(); class=number /><br>' +
 
-			'<button onclick=outLat.value=selLat.value=parseInt(selLat.value,10)+1;console.log(selLat.value);updateParameters(); >up</button> ' +
-			'<button onclick=selLat.value=parseInt(selLat.value,10)-1;console.log(selLat.value);updateParameters(); >down</button> ' +
-			'<button onclick=selLon.value=parseInt(selLon.value,10)-1;console.log(selLat.value);updateParameters(); >Left</button> ' +
-			'<button onclick=selLon.value=parseInt(selLon.value,10)+1;console.log(selLat.value);updateParameters(); >Right</button> ' +
-//			'<button onclick=requestSRTMFile(fileNames[selFile.selectedIndex]); >Load Data</button>'
+			'Move 1 degree:' +
+			'<button onclick=outLat.value=selLat.value=parseInt(selLat.value,10)+1;console.log(selLat.value);updateParameters(); >North</button> ' +
+			'<button onclick=selLon.value=parseInt(selLon.value,10)+1;console.log(selLat.value);updateParameters(); >East</button> ' +
+			'<button onclick=selLat.value=parseInt(selLat.value,10)-1;console.log(selLat.value);updateParameters(); >South</button> ' +
+			'<button onclick=selLon.value=parseInt(selLon.value,10)-1;console.log(selLat.value);updateParameters(); >West</button> ' +
+			'Vertical scale: <input id=scaleStretch type=number value=10 onchange=;updateParameters(); class=number >' +
+			'<hr>' +
 			'<div id=msg1></div>' +
 			'<div id=msg2></div>' +
 		'';
-
-//		for ( var i = 0, len = fileNames.length; i < len; i++) {
-//			opt = selFile.appendChild( document.createElement( 'option' ) );
-//			opt.text = fileNames[i];
-//		}
-
-		canvasDestination = JA.menu.appendChild( document.createElement( 'canvas' ) );
-		canvasDestination.width = canvasDestination.height = 256;
-		contextDestination = canvasDestination.getContext( '2d' );
-
-		canvasSource = JA.menu.appendChild( document.createElement( 'canvas' ) );
-		canvasSource = document.createElement( 'canvas' );
-		canvasSource.width = cropColumns;
-		canvasSource.height = cropRows;
-		contextSource = canvasSource.getContext( '2d' );
-
-		imageData = contextSource.createImageData( canvasSource.width, canvasSource.height );
-		imageDataData = imageData.data;
 
 		renderer = new THREE.WebGLRenderer( { alpha: 1, antialias: true, clearColor: 0xffffff }  );
 		renderer.setSize( window.innerWidth, window.innerHeight );
@@ -96,6 +72,8 @@
 	}
 
 	function updateParameters() {
+		changes = 0;
+
 		lon = selLon.value || lonDefault;
 		lat = selLat.value || latDefult;
 
@@ -110,9 +88,8 @@
 
 		requestRow( startRow );
 
-// console.log( 'lon', lon, startColumn, finishColumn, ' lat', lat, startRow, finishRow )
+// console.log( 'lon', lon, startColumn, finishColumn, ' lat', lat, startRow, finishRow );
 	}
-
 
 	function requestRow( row ) {
 
@@ -124,6 +101,7 @@
 
 	function requestSRTMFile( fileName, startByte, finishByte ) {
 //console.log( fileName, startByte, finishByte );
+
 		startTime = new Date();
 		xmlHttp = new XMLHttpRequest();
 		xmlHttp.responseType = "arraybuffer";
@@ -131,7 +109,7 @@
 		xmlHttp.onreadystatechange = parseData;
 		xmlHttp.setRequestHeader('Range', 'bytes=' + startByte + '-' + finishByte );
 		xmlHttp.send( null );
-//		xmlHttp.onload = function () { parseData( xmlHttp.response, fileName ); } ;
+
 	}
 
 	function parseData () {
@@ -148,22 +126,7 @@
 				items += elevation + ' ';
 				elevations.push( elevation );
 
-				imageDataData[ i + 2 ] = (( elevation & 0xff0000 ) >> 16 );
-				imageDataData[ i + 1 ] = (( elevation & 0x00ff00 ) >> 8 );
-				imageDataData[ i + 0 ] = elevation & 0x0000ff;
-				imageDataData[ i + 3 ] = 255;
-				i += 4;
-
 			}
-
-		contextSource.putImageData( imageData, - startColumn, - startRow, startColumn, startRow, 255, 255 );
-
-		imageData = contextSource.getImageData( 1, 1, 256, 256 );
-		contextDestination.putImageData( imageData, 0, 0, 0, 0, 256, 256);
-
-//			msg2.innerHTML += 'item count:' + byteArray.length + ' time(ms):' + ( new Date() - startTime) +
-//				'<br>items:' + items +
-			'<br><br>';
 
 			if ( currentRow++ < finishRow ) {
 				requestRow( currentRow );
@@ -171,12 +134,12 @@
 				updatePlane();
 			}
 
-
 		} else {
 
-			msg1.innerHTML = fileName + ' readystate changes:' + ++changes + ' readyState ' + xmlHttp.readyState + '<br>' +
+			msg1.innerHTML = 'file:' + fileName + '<br>' +
+				'state changes:' + ( ++changes ) + ' state:' + xmlHttp.readyState + ' ' +
 				'status:' + xmlHttp.status + ' ' +
-				'statusText:' + xmlHttp.statusText +
+				'text:' + xmlHttp.statusText +
 			'';
 
 		}
@@ -188,6 +151,7 @@
 		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( 0.5 * Math.PI ) );
 		verts = geometry.vertices;
 
+		var scale = scaleBase * parseInt(scaleStretch.value, 10 ); 
 		for (var i = 0, len = elevations.length; i < len; i++) {
 			verts[ i ].y = scale * (  elevations[i] ) ;
 		}
@@ -204,7 +168,7 @@
 
 		scene.add( mesh );
 
-		console.log( 'Load time in ms: ', new Date() - startTime );
+		msg2.innerHTML =  'Load time in ms: ' + ( new Date() - startTime );
 	}
 
 	function animate() {
