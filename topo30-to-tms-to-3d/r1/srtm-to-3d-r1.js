@@ -1,5 +1,6 @@
 
-	var dirName = 'C:/temp/srtm30-plus-v10/';
+//	var dirName = 'C:/temp/srtm30-plus-v10/';
+	var dirName = 'C:/Users/Theo/Dropbox/Public/git-repos/jaanga-terrain/terrain-srtm30-plus/srtm/';
 	var count = 0;
 	scale = 0.015;
 	var renderer, scene, camera, controls, mesh;

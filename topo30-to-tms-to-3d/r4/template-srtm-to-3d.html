@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang=en >
+<head>
+<title>SRTM Topo30 to 3D Template</title>
+<meta charset=utf-8 />
+<meta name=viewport content='width=device-width,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0' />
+</head>
+<body>
+<script src=http://mrdoob.github.io/three.js/build/three.min.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/controls/OrbitControls.js ></script>
+<script src=http://mrdoob.github.io/three.js/examples/js/libs/stats.min.js ></script>
+<script>
+	var info, stats, renderer, scene, camera, controls;
+	var geometry, material, mesh;
+
+	fileName = 'c:/temp/topo30/topo30';
+//	fileName = './topo30';
+//	fileName = 'http://caper.ws/terrain-srtm30-plus/topo30/topo30';
+
+	var gazetteer;
+
+	var size = 256;
+	var half = size / 2;
+	var canvas, context, image;
+	var d2r = Math.PI / 180;
+
+	var tileX = 20;
+	var tileY = 48;
+
+	var latDefault = tile2lat( tileY, 7 );
+	var lonDefault = tile2lon( tileX, 7 );
+
+	var cropRows = Math.floor( 120 * ( latDefault - tile2lat( tileY + 1, 7 ) ) );
+	var cropColumns = 337;
+
+	var startRow;
+	var startColumn;
+
+	var finishRow;
+	var finishColumn;
+
+	var dataColumns = 2 * 43200;
+	var dataRows = 21600;
+
+	var xmlHttp;
+	var changes;
+	var startTime;
+
+	var currentRow;
+	var elevations;
+
+	var scaleBase = 0.0015;
+	var scaleStretch = 10;
+
+	init();
+	animate();
+
+	function init() {
+
+		var css = document.head.appendChild( document.createElement('style') );
+		css.innerHTML ='body { font: 600 12pt monospace; margin: 0; overflow: hidden; }' ;
+
+		if ( window.self === window.top ) {
+
+			var info = document.body.appendChild( document.createElement( 'div' ) );
+			info.style.cssText = 'margin: 0 20px; position: absolute; ';
+			info.innerHTML = '<a href="" ><h1>' + document.title + '</h1></a>' +
+				'<p><select id=selPlace ></select></p>' +
+				'Latitude: <select id=selLat onchange=updateParameters(); ></select>  ' +
+				'Longitude: <select id=selLon onchange=updateParameters(); ></select><br>' +
+				'TileX: <select id=selTileX onchange=updateTileParameters(); ></select> ' +
+				'TileY: <select id=selTileY onchange=updateTileParameters(); ></select><br>' +
+				'<p>' +
+				'Go: <button onclick=tileEast(); >Tile East</button> ' +
+				'<button onclick=tileWest(); >Tile West</button> ' +
+
+				'<button onclick=tileNorth(); >Tile North</button> ' +
+				'<button onclick=tileSouth(); >Tile South</button> ' +
+				'</p>' +
+				'<p id=locationMap ></p>' +
+				'<div id=msg1 ></div>' +
+				'<div id=msg2 ></div>' +
+			'';
+
+		} else {
+//			document.write('<h1>Inside an iframe</h1>');
+		}
+
+		addGazetteer();
+		addLocationOptions();
+		addLocationMap();
+
+		stats = new Stats();
+		stats.domElement.style.cssText = 'position: absolute; right: 0; z-index: 100; ';
+		document.body.appendChild( stats.domElement );
+
+		renderer = new THREE.WebGLRenderer( { alpha: 1, antialias: true, clearColor: 0xffffff }  );
+		renderer.setSize( window.innerWidth, window.innerHeight );
+		document.body.appendChild( renderer.domElement );
+
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
+		camera.position.set( 0, 150, 200 );
+
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
+
+		scene = new THREE.Scene();
+
+// Axis
+		var axisHelper = new THREE.AxisHelper( 50 );
+		scene.add( axisHelper );
+
+// Sea Level
+		var geometry = new THREE.PlaneGeometry( 200, 200 );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( -0.5 * Math.PI ) );
+		var material = new THREE.MeshBasicMaterial( { color: 0x0000ff, opacity: 0.5, side: 2, transparent: true } );
+		var mesh = new THREE.Mesh( geometry, material );
+		scene.add( mesh );
+
+		updateParameters();
+
+	}
+
+	function addGazetteer() {
+
+		var data = requestFile( '../../../terrain-plus/gazetteer/places-2000.csv' );
+		var xmlHttp;
+
+		function requestFile( fileName ) {
+
+			xmlHttp = new XMLHttpRequest();
+			xmlHttp.open( 'GET', fileName, true );
+			xmlHttp.onreadystatechange = callback;
+			xmlHttp.send( null );
+
+		}
+
+		function callback() {
+
+			if ( xmlHttp.readyState != 4  ) { return; }
+
+			var response = xmlHttp.responseText;
+
+			var lines = response.split(/\r\n|\n/);
+			gazetteer = [ ['Select a location','37.796','-122.398'] ];
+
+			for ( var i = 1; i < lines.length; i++ ) {
+
+				pl = lines[i].split( ';' );
+				gazetteer.push( [ pl[0], parseFloat( pl[1] ), parseFloat( pl[2] ) ] );
+
+				parent.selPlace.appendChild( document.createElement( 'option' ) );
+				parent.selPlace.children[ i - 1].text = gazetteer[ i - 1][0];
+
+			}
+
+			parent.selPlace.onchange = function() {
+
+				startPlace = this.selectedIndex;
+				parent.selTileY.selectedIndex = lat2tile( gazetteer[ startPlace ][1], 7 );
+				parent.selTileX.selectedIndex = lon2tile( gazetteer[ startPlace ][2], 7 );
+				updateTileParameters();
+
+			};
+
+//	console.log( gazetteer );
+
+		}
+
+	}
+
+	function addLocationOptions() {
+
+		for ( var i = 0; i < 181; i++ ) {
+
+			parent.selLat.appendChild( document.createElement( 'option' ) );
+			parent.selLat.children[ i ].text = 90 - i;
+
+		}
+
+		parent.selLat.selectedIndex = 52;
+
+		for ( var i = 0; i < 361; i++ ) {
+
+			parent.selLon.appendChild( document.createElement( 'option' ) );
+			parent.selLon.children[ i ].text = 180 - i;
+
+		}
+
+		parent.selLon.selectedIndex = 303;
+
+		for ( var i = 0; i < 128; i++ ) {
+
+			parent.selTileX.appendChild( document.createElement( 'option' ) );
+			parent.selTileX.children[ i ].text = i;
+
+		}
+
+		parent.selTileX.selectedIndex = 20;
+
+		for ( var i = 0; i < 128; i++ ) {
+
+			parent.selTileY.appendChild( document.createElement( 'option' ) );
+			parent.selTileY.children[ i ].text = i;
+
+		}
+
+		parent.selTileY.selectedIndex = 49;
+
+	}
+
+	function addLocationMap() {
+
+		canvas = parent.locationMap.appendChild( document.createElement( 'canvas' ) );
+		canvas.width = canvas.height = size;
+		canvas.style.cssText = 'border: 1px solid gray; ';
+		context = canvas.getContext( '2d' );
+
+		loadImage( '../../../terrain-plus/samples-png/1-0-0.png', 0, 0 );
+		loadImage( '../../../terrain-plus/samples-png/1-1-0.png', half, 0 );
+		loadImage( '../../../terrain-plus/samples-png/1-0-1.png', 0, half );
+		loadImage( '../../../terrain-plus/samples-png/1-1-1.png', half, half );
+
+		function loadImage( fileName, x, y ) {
+
+			var img = document.createElement( 'img' );
+	//		document.body.appendChild( img );
+			img.src = fileName;
+
+			img.onload = function(){
+
+//				context.beginPath();
+				context.drawImage( img, 0, 0, 256, 256, x, y, half, half );
+
+//				context.closePath();
+
+				if ( fileName === '../../../terrain-plus/samples-png/1-1-1.png' ) {
+
+					image = context.getImageData( 0, 0, size, size );
+					updateParameters();
+
+				}
+
+			}
+
+		}
+
+	}
+
+	function updateTileParameters() {
+
+		parent.selLat.selectedIndex = 90 - Math.floor( tile2lat( parent.selTileY.value, 7 ) );
+		parent.selLon.selectedIndex = 180 - Math.floor( tile2lon( parent.selTileX.value, 7 ) );
+
+		updateParameters();
+
+	}
+
+	function tileEast() {
+
+		parent.selLon.selectedIndex = 180 - Math.floor( tile2lon( ++parent.selTileX.value, 7 ) );
+		updateParameters();
+
+	}
+
+	function tileWest() {
+
+		parent.selLon.selectedIndex = 180 - Math.floor( tile2lon( --parent.selTileX.value, 7 ) );
+		updateParameters();
+
+	}
+
+	function tileNorth() {
+
+		parent.selLat.selectedIndex = 90 - Math.floor( tile2lat( --parent.selTileY.value, 7 ) );
+		updateParameters();
+
+	}
+
+	function tileSouth() {
+
+		parent.selLat.selectedIndex = 90 - Math.floor( tile2lat( ++parent.selTileY.value, 7 ) );
+		updateParameters();
+
+	}
+
+	function updateParameters() {
+
+		changes = 0;
+
+		lat = parseFloat( parent.selLat.value ) || latDefault;
+		lon = parseFloat( parent.selLon.value ) || lonDefault;
+
+		startColumn = Math.floor( 120 * lon );
+		startRow = Math.floor( 10800 - 120 * lat );
+
+		finishRow = startRow + cropRows - 1;
+		finishColumn = startColumn + cropColumns;
+
+		currentRow = startRow;
+		elevations = [];
+
+		requestRow( startRow );
+
+//console.log( 'lon1', lon, startColumn, finishColumn );
+//console.log( 'lat', lat, startRow, finishRow );
+
+		updateLocationMap( lat, lon );
+
+	}
+
+	function updateLocationMap( lat, lon ) {
+
+		if ( !image ) { return; }
+
+		siny = Math.sin( ( d2r * lat ) );
+//console.log( 'siny', siny );
+
+		lat = half - Math.log( ( 1 + siny ) / ( 1 - siny ) ) * half * 0.15;
+// 0.1 is just a trial and error number. What should the real scale factor be and why?
+//console.log( 'lat2', lat );
+
+		context.beginPath(); //
+		context.clearRect( 0, 0, canvas.width, canvas.height);
+
+		context.putImageData( image, 0, 0 );
+		context.strokeStyle =  'red';
+
+		context.moveTo( 0, lat );
+		context.lineTo( size, lat );
+		context.stroke();
+
+		lon = size * ( ( 180 + lon ) / 360 );
+//console.log( '\n\nlon3', lon );
+
+		context.moveTo( lon, 0 );
+		context.lineTo( lon, size );
+		context.stroke();
+		context.closePath();
+
+	}
+
+	function requestRow( row ) {
+
+		startByte = Math.floor( row * dataColumns + 2 * startColumn );
+		finishByte = Math.floor( startByte + 2 * cropColumns - 1 );
+
+//console.log( startByte, finishByte  );
+
+		requestSRTMFile( fileName, startByte, finishByte );
+
+	}
+
+	function requestSRTMFile( fileName, startByte, finishByte ) {
+
+		startTime = new Date();
+		xmlHttp = new XMLHttpRequest();
+		xmlHttp.responseType = "arraybuffer";
+		xmlHttp.open( 'GET', fileName, true );
+		xmlHttp.onreadystatechange = parseData;
+		xmlHttp.setRequestHeader('Range', 'bytes=' + startByte + '-' + finishByte );
+		xmlHttp.send( null );
+
+	}
+
+	function parseData () {
+
+		if ( xmlHttp.readyState === 4  ) {
+
+			byteArray = new Uint8Array( xmlHttp.response );
+
+			var index = 0;
+			var items = '';
+
+			for ( var i = 0, column = startColumn; column < finishColumn; column++ ) {
+
+				elevation = byteArray[ index++ ] * 256 + byteArray[ index++ ];
+
+//				elevation = ( elevation < 32767 ) ? elevation : -( 65536 - elevation );
+				elevation = ( elevation < 32767 ) ? elevation : elevation - 65536;
+				items += elevation + ' ';
+				elevations.push( elevation );
+
+			}
+
+			if ( currentRow === startRow ) {
+
+console.log( elevations );
+		for ( var i = 0; i < 50; i++ ) {
+console.log( byteArray[ i ] );
+		}
+
+			}
+
+			if ( currentRow++ < finishRow ) {
+
+				requestRow( currentRow );
+
+			} else {
+
+				updatePlane();
+
+			}
+
+
+		} else {
+
+			parent.msg1.innerHTML = 'file:' + fileName + '<br>' +
+				'state changes:' + ( ++changes ) + ' state:' + xmlHttp.readyState + ' ' +
+				'status:' + xmlHttp.status + ' ' +
+				'text:' + xmlHttp.statusText +
+			'';
+
+		}
+
+	}
+
+	function updatePlane() {
+
+		geometry = new THREE.PlaneGeometry( 200, 200, cropColumns - 1, cropRows - 1 );
+		geometry.applyMatrix( new THREE.Matrix4().makeRotationX( 0.5 * Math.PI ) );
+		verts = geometry.vertices;
+
+		var scale = scaleBase * scaleStretch;
+
+		for (var i = 0; i < elevations.length; i++ ) {
+
+			verts[ i ].y = scale * (  elevations[i] ) ;
+
+		}
+
+//console.log( elevations.slice(0, 50) );
+
+		geometry.computeFaceNormals();
+		geometry.computeVertexNormals();
+
+		var material = new THREE.MeshNormalMaterial( { shading: THREE.SmoothShading, side: 2 } );
+
+		scene.remove( mesh );
+		mesh = new THREE.Mesh( geometry, material );
+		mesh.scale.z = -1;
+
+		scene.add( mesh );
+
+		parent.msg2.innerHTML =  'Load time in ms: ' + ( new Date() - startTime );
+
+	}
+
+
+	function lon2tile( lon, zoom ) {
+
+		return Math.floor( ( lon + 180 ) / 360 * Math.pow( 2, zoom ) );
+
+	}
+
+	function lat2tile( lat, zoom ) {
+
+		var pi = Math.PI
+		return Math.floor(( 1 - Math.log( Math.tan( lat * pi / 180) + 1 / Math.cos( lat * pi / 180)) / pi )/2 * Math.pow(2, zoom) );
+
+	}
+
+	function tile2lon( x, zoom ) {
+
+		return ( x / Math.pow( 2, zoom ) * 360 - 180 );
+
+	}
+
+	function tile2lat( y, zoom ) {
+
+		var pi = Math.PI
+		var n = pi - 2 * pi * y / Math.pow( 2, zoom );
+		return 180 / pi * Math.atan( 0.5 * ( Math.exp( n ) - Math.exp( -n ) ));
+
+	}
+
+	function animate() {
+
+		requestAnimationFrame( animate );
+		controls.update();
+		stats.update();
+		renderer.render( scene, camera );
+
+	}
+
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 [Jaanga](../index.html ) &raquo;<br>[Terrain<br>SRTM30 Plus]( ./index.html )
-=========================================================================================
+===
 
 <div id=rm >
 	<a href=JavaScript:displayMD("#readme.md#rm"); >Read Me</a>

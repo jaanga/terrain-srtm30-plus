@@ -1,4 +1,4 @@
-// ftp://topex.ucsd.edu/pub/srtm30_plus/README.V10.txt
+// ftp://topex.ucsd.edu/pub/srtm30_plus/README.V11.txt
 
 	fileName = 'c:/temp/topo30/topo30';
 //	fileName = './topo30';
@@ -10,8 +10,8 @@
 	var cropRows = 240;
 	var cropColumns = 240;
 
-	var startRow = 12000;
-	var startColumn = 10000;
+	var startRow;
+	var startColumn;
 
 	var finishRow = startRow + cropRows - 1;
 	var finishColumn = startColumn + cropColumns;
@@ -93,9 +93,9 @@
 
 	function requestRow( row ) {
 
-			startByte = row * dataColumns + 2 * startColumn;
-			finishByte = startByte + 2 * cropColumns - 1;
-			requestSRTMFile( fileName, startByte, finishByte );
+		startByte = row * dataColumns + 2 * startColumn;
+		finishByte = startByte + 2 * cropColumns - 1;
+		requestSRTMFile( fileName, startByte, finishByte );
 
 	}
 

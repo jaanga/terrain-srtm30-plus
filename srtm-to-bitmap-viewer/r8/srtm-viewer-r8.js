@@ -213,8 +213,8 @@ console.log( 'Load time in ms: ', new Date() - startTime );
 			'<div id=msg>x: y: <br>rgb:<br>hex:<br>elevation:<br></div>' +
 		'';
 
-		inpPretty.onchange = function() { requestHGTFile( folderSource + files[ selSRTM.selectedIndex ] ); };
-		inpPrettyMistake.onchange = function() { requestHGTFile( folderSource + files[ selSRTM.selectedIndex ] ); };
+		inpPretty.onchange = function() { requestSRTMFile( folderSource + files[ selSRTM.selectedIndex ] ); };
+		inpPrettyMistake.onchange = function() { requestSRTMFile( folderSource + files[ selSRTM.selectedIndex ] ); };
 
 		var data = requestFile( folderSource + fileList );
 		files = data.split(/\r\n|\n/);
